@@ -4,450 +4,410 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Traditional Badminton Scorer</title>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#07090F;--bg2:#0E1420;--bg3:#151C2C;--bg4:#1C2538;
-  --p1:#E8401C;--p2:#0EA5C4;
-  --gold:#F5C542;--red:#EF4444;
-  --line:rgba(255,255,255,0.08);--muted:rgba(255,255,255,0.38);
-  --text:#EFF2F8;--card:16px;
-  --font-h:'Rajdhani',sans-serif;--font-b:'Inter',sans-serif;
+  --p1:#E8401C;--p2:#0EA5C4;--gold:#F5C542;--red:#EF4444;--green:#22C55E;
+  --line:rgba(255,255,255,0.08);--muted:rgba(255,255,255,0.38);--text:#EFF2F8;
+  --fh:'Rajdhani',sans-serif;--fb:'Inter',sans-serif;
 }
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font-b);overflow-x:hidden}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--fb);overflow-x:hidden}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:4px}
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes popBig{0%{transform:scale(1)}40%{transform:scale(1.13)}100%{transform:scale(1)}}
-@keyframes blink{0%,100%{opacity:.5}50%{opacity:1}}
-@keyframes confettiFall{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(130px) rotate(720deg)}}
-@keyframes serveBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-@keyframes glowP1{0%,100%{box-shadow:0 0 0 2px rgba(232,64,28,.4)}50%{box-shadow:0 0 20px 3px rgba(232,64,28,.55)}}
-@keyframes glowP2{0%,100%{box-shadow:0 0 0 2px rgba(14,165,196,.4)}50%{box-shadow:0 0 20px 3px rgba(14,165,196,.55)}}
+@keyframes blink{0%,100%{opacity:.45}50%{opacity:1}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes fall{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(130px) rotate(720deg)}}
+@keyframes glowR{0%,100%{box-shadow:0 0 0 2px rgba(232,64,28,.35)}50%{box-shadow:0 0 22px 4px rgba(232,64,28,.5)}}
+@keyframes glowB{0%,100%{box-shadow:0 0 0 2px rgba(14,165,196,.35)}50%{box-shadow:0 0 22px 4px rgba(14,165,196,.5)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
 
 /* ══ SETUP ══════════════════════════════════════════════════════ */
-#setup{
-  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:32px 16px;
-  background:radial-gradient(ellipse 70% 50% at 20% 20%,rgba(232,64,28,.1),transparent 65%),
-             radial-gradient(ellipse 60% 45% at 80% 80%,rgba(14,165,196,.08),transparent 60%),
-             var(--bg);
-  animation:fadeUp .4s ease;
-}
-.logo{display:flex;align-items:center;gap:14px;margin-bottom:6px}
-.logo-text{font-family:var(--font-h);font-size:50px;font-weight:700;letter-spacing:3px;color:#fff}
-.logo-text em{color:var(--p1);font-style:normal}
-.logo-sub{text-align:center;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:28px}
-.rule-tag{display:inline-block;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:32px;background:rgba(245,197,66,.12);color:var(--gold);border:1px solid rgba(245,197,66,.3)}
+#setup{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 16px;
+  background:radial-gradient(ellipse 70% 50% at 20% 20%,rgba(232,64,28,.1),transparent 65%),radial-gradient(ellipse 60% 45% at 80% 80%,rgba(14,165,196,.08),transparent 60%),var(--bg);animation:fadeUp .4s ease}
+.logo{display:flex;align-items:center;gap:13px;margin-bottom:5px}
+.logo-txt{font-family:var(--fh);font-size:48px;font-weight:700;letter-spacing:3px;color:#fff}
+.logo-txt em{color:var(--p1);font-style:normal}
+.logo-sub{text-align:center;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:22px}
+.rule-pill{display:inline-block;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:28px;background:rgba(245,197,66,.1);color:var(--gold);border:1px solid rgba(245,197,66,.28)}
 
-.setup-wrap{width:100%;max-width:920px;background:var(--bg2);border-radius:22px;border:1px solid var(--line);box-shadow:0 28px 80px rgba(0,0,0,.55);overflow:hidden}
-.setup-top{display:grid;grid-template-columns:1fr 1px 1fr}
-.setup-col{padding:34px 38px}
-.setup-div{background:var(--line)}
+.sw{width:100%;max-width:860px;background:var(--bg2);border-radius:20px;border:1px solid var(--line);box-shadow:0 24px 72px rgba(0,0,0,.55);overflow:hidden}
+.sw-top{display:grid;grid-template-columns:1fr 1px 1fr}
+.sc{padding:30px 34px}
+.sd{background:var(--line)}
+.sh{font-family:var(--fh);font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;margin-top:18px}
+.sh:first-child{margin-top:0}
+label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
+input[type=text],input[type=number]{width:100%;padding:10px 13px;border-radius:9px;border:2px solid var(--line);background:var(--bg3);color:var(--text);font-family:var(--fb);font-size:14px;font-weight:600;outline:none;transition:border-color .2s,box-shadow .2s}
+input.p1c:focus{border-color:rgba(232,64,28,.6);box-shadow:0 0 0 3px rgba(232,64,28,.1)}
+input.p2c:focus{border-color:rgba(14,165,196,.6);box-shadow:0 0 0 3px rgba(14,165,196,.1)}
+input+input{margin-top:7px}
+.tr{display:flex;gap:6px;margin-bottom:4px}
+.tg{flex:1;padding:9px 0;border-radius:9px;border:none;cursor:pointer;font-family:var(--fb);font-size:13px;font-weight:700;background:var(--bg3);color:var(--muted);transition:all .2s}
+.tg.on{background:var(--p1);color:#fff;box-shadow:0 4px 14px rgba(232,64,28,.3)}
 
-.sec-head{font-family:var(--font-h);font-size:12px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;margin-top:20px}
-.sec-head:first-child{margin-top:0}
-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:7px}
-input[type=text],input[type=number]{
-  width:100%;padding:11px 14px;border-radius:10px;border:2px solid var(--line);
-  background:var(--bg3);color:var(--text);font-family:var(--font-b);font-size:14px;font-weight:600;
-  outline:none;transition:border-color .2s,box-shadow .2s;
-}
-input.p1c:focus{border-color:rgba(232,64,28,.6);box-shadow:0 0 0 3px rgba(232,64,28,.12)}
-input.p2c:focus{border-color:rgba(14,165,196,.6);box-shadow:0 0 0 3px rgba(14,165,196,.12)}
-input+input{margin-top:8px}
-.field-mb{margin-bottom:4px}
+.rc{background:rgba(245,197,66,.05);border:1px solid rgba(245,197,66,.2);border-radius:11px;padding:14px 15px;margin-top:16px}
+.rc-t{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:9px}
+.ri{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;font-size:12px;line-height:1.5;color:rgba(255,255,255,.6)}
+.ri:last-child{margin-bottom:0}
+.rd{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:6px}
 
-.tog-row{display:flex;gap:6px;margin-bottom:4px}
-.tog{flex:1;padding:10px 0;border-radius:9px;border:none;cursor:pointer;font-family:var(--font-b);font-size:13px;font-weight:700;background:var(--bg3);color:var(--muted);transition:all .2s}
-.tog.on{background:var(--p1);color:#fff;box-shadow:0 4px 16px rgba(232,64,28,.35)}
+/* Scoring config */
+.sc-cfg{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.sc-field{flex:1;min-width:80px}
 
-.fmt-btn{width:100%;padding:12px 14px;border-radius:10px;border:2px solid transparent;background:var(--bg3);cursor:pointer;text-align:left;transition:all .2s;margin-bottom:7px;display:flex;align-items:center;justify-content:space-between}
-.fmt-btn.on{border-color:var(--p1);background:rgba(232,64,28,.08)}
-.fmt-name{font-size:14px;font-weight:700;color:var(--text)}
-.fmt-desc{font-size:12px;color:var(--muted);margin-top:2px}
-.fmt-badge{font-size:10px;font-weight:800;color:var(--p1);background:rgba(232,64,28,.15);padding:2px 8px;border-radius:20px;white-space:nowrap}
+.sf{padding:20px 34px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.kh{font-size:12px;color:var(--muted)}
+.kh kbd{background:var(--bg3);border:1px solid var(--line);border-radius:4px;padding:2px 6px;font-size:11px;font-family:monospace;color:var(--text)}
+.sb{padding:13px 46px;border-radius:11px;border:none;cursor:pointer;font-family:var(--fh);font-size:21px;font-weight:700;letter-spacing:1px;background:linear-gradient(135deg,var(--p1),#ff7043);color:#fff;box-shadow:0 5px 22px rgba(232,64,28,.42);transition:transform .15s,box-shadow .15s}
+.sb:hover{transform:translateY(-2px);box-shadow:0 9px 30px rgba(232,64,28,.55)}
+.sb:active{transform:scale(.97)}
 
-#cus-fields{display:none;gap:8px;grid-template-columns:1fr 1fr 1fr;margin-top:10px}
-#cus-fields.show{display:grid}
-
-.rule-card{background:rgba(245,197,66,.05);border:1px solid rgba(245,197,66,.2);border-radius:12px;padding:14px 16px;margin-top:18px}
-.rule-card-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
-.rule-item{display:flex;align-items:flex-start;gap:9px;margin-bottom:7px;font-size:12px;line-height:1.5;color:rgba(255,255,255,.6)}
-.rule-item:last-child{margin-bottom:0}
-.rule-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:6px}
-
-.setup-footer{padding:22px 38px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.kbd-hint{font-size:12px;color:var(--muted)}
-.kbd-hint kbd{background:var(--bg3);border:1px solid var(--line);border-radius:4px;padding:2px 6px;font-size:11px;font-family:monospace;color:var(--text)}
-.start-btn{padding:13px 50px;border-radius:12px;border:none;cursor:pointer;font-family:var(--font-h);font-size:22px;font-weight:700;letter-spacing:1px;background:linear-gradient(135deg,var(--p1),#ff7043);color:#fff;box-shadow:0 6px 24px rgba(232,64,28,.45);transition:transform .15s,box-shadow .15s}
-.start-btn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(232,64,28,.6)}
-.start-btn:active{transform:scale(.97)}
-
-/* ══ GAME SCREEN ══════════════════════════════════════════════ */
+/* ══ GAME SCREEN ═════════════════════════════════════════════ */
 #game{min-height:100vh;display:none;flex-direction:column}
 #game.on{display:flex;animation:fadeUp .3s ease}
 
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:11px 22px;border-bottom:1px solid var(--line);background:rgba(14,20,32,.96);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20}
-.tb-brand{font-family:var(--font-h);font-size:17px;font-weight:700;letter-spacing:2px}
-.tb-brand em{color:var(--p1);font-style:normal}
-.tb-center{display:flex;gap:7px;align-items:center;flex-wrap:wrap;justify-content:center}
-.pill{padding:3px 11px;border-radius:20px;font-size:11px;font-weight:700;background:var(--bg3);color:var(--muted);border:1px solid var(--line)}
-.tmr{font-family:var(--font-h);font-size:21px;font-weight:700;letter-spacing:2px;color:var(--p1);cursor:pointer;user-select:none;background:none;border:none;transition:color .2s}
+.tb{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-bottom:1px solid var(--line);background:rgba(14,20,32,.96);backdrop-filter:blur(8px);position:sticky;top:0;z-index:20}
+.tb-br{font-family:var(--fh);font-size:17px;font-weight:700;letter-spacing:2px}
+.tb-br em{color:var(--p1);font-style:normal}
+.tb-c{display:flex;gap:7px;align-items:center;flex-wrap:wrap;justify-content:center}
+.pill{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:var(--bg3);color:var(--muted);border:1px solid var(--line)}
+.tmr{font-family:var(--fh);font-size:20px;font-weight:700;letter-spacing:2px;color:var(--p1);cursor:pointer;user-select:none;background:none;border:none;transition:color .2s}
 .tmr.paused{color:var(--muted)}
-.tb-right{display:flex;gap:6px}
-.tb-btn{padding:6px 13px;border-radius:8px;border:1px solid var(--line);background:var(--bg3);color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-b)}
-.tb-btn:hover{color:var(--text);background:var(--bg4)}
+.tb-r{display:flex;gap:5px}
+.tbb{padding:6px 12px;border-radius:7px;border:1px solid var(--line);background:var(--bg3);color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--fb)}
+.tbb:hover{color:var(--text);background:var(--bg4)}
 
-.game-body{flex:1;display:grid;grid-template-columns:1fr 360px;overflow:hidden}
-.score-area{padding:22px 26px;display:flex;flex-direction:column;gap:16px;overflow-y:auto}
+/* Layout */
+.gb{flex:1;display:grid;grid-template-columns:1fr 380px;overflow:hidden}
+.sa{padding:20px 24px;display:flex;flex-direction:column;gap:14px;overflow-y:auto}
 
-/* Serve Banner */
-.srv-banner{background:var(--bg2);border-radius:12px;border:1px solid var(--line);padding:13px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.srv-shuttle{font-size:22px;animation:serveBounce 1.2s ease-in-out infinite;flex-shrink:0}
-.srv-who{font-family:var(--font-h);font-size:16px;font-weight:700;margin-bottom:2px}
-.srv-note{font-size:12px;color:var(--muted);line-height:1.5}
+/* Serve banner */
+.svb{background:var(--bg2);border-radius:11px;border:1px solid var(--line);padding:12px 16px;display:flex;align-items:center;gap:11px;flex-wrap:wrap}
+.svb-ic{font-size:20px;animation:bounce 1.2s ease-in-out infinite;flex-shrink:0}
+.svb-w{font-family:var(--fh);font-size:15px;font-weight:700;margin-bottom:2px}
+.svb-n{font-size:12px;color:var(--muted);line-height:1.5}
+/* Hand indicators */
+.hands-row{display:flex;gap:5px;margin-top:5px}
+.hand-dot{width:10px;height:10px;border-radius:50%;border:2px solid rgba(255,255,255,.25);transition:all .3s}
+.hand-dot.active{background:var(--gold);border-color:var(--gold);box-shadow:0 0 6px rgba(245,197,66,.6)}
 
-/* Set chips */
-.set-chips{display:none;gap:8px;flex-wrap:wrap;align-items:center}
-.set-chip{padding:4px 13px;border-radius:20px;font-size:12px;font-weight:700;background:var(--bg3);border:1px solid var(--line);color:var(--muted)}
-.set-chip .w1{color:var(--p1)}.set-chip .w2{color:var(--p2)}
+/* Score info bar */
+.score-info{display:flex;gap:8px;align-items:center;justify-content:center;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.score-info strong{color:var(--gold)}
 
 /* Scoreboard */
-.scoreboard{display:grid;grid-template-columns:1fr 56px 1fr;gap:12px;align-items:stretch}
+.scoreboard{display:grid;grid-template-columns:1fr 52px 1fr;gap:10px;align-items:stretch}
+.pp{border-radius:14px;padding:22px 16px;text-align:center;border:2px solid var(--line);background:var(--bg2);position:relative;overflow:hidden;transition:border-color .3s}
+.pp.p1{--pc:var(--p1)}
+.pp.p2{--pc:var(--p2)}
+.pp.p1::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(232,64,28,.07),transparent 55%);pointer-events:none}
+.pp.p2::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(14,165,196,.07),transparent 55%);pointer-events:none}
+.pp.p1.serving{border-color:var(--p1);animation:glowR 2s ease-in-out infinite}
+.pp.p2.serving{border-color:var(--p2);animation:glowB 2s ease-in-out infinite}
+.srv-d{position:absolute;top:9px;left:50%;transform:translateX(-50%);font-size:14px;opacity:0;animation:blink 1.4s ease-in-out infinite;transition:opacity .3s}
+.serving .srv-d{opacity:1}
+.pn{font-family:var(--fh);font-size:18px;font-weight:700;color:var(--pc);margin-top:16px;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ps{font-size:11px;color:var(--muted);margin-bottom:10px;min-height:14px}
+.big-sc{font-family:var(--fh);font-size:96px;font-weight:700;line-height:1;letter-spacing:-2px;display:block;color:var(--pc);text-shadow:0 0 55px rgba(var(--pcs),.22)}
+.pp.p1 .big-sc{text-shadow:0 0 55px rgba(232,64,28,.22)}
+.pp.p2 .big-sc{text-shadow:0 0 55px rgba(14,165,196,.22)}
+.big-sc.pop{animation:popBig .2s ease}
 
-.p-panel{border-radius:var(--card);padding:24px 18px;text-align:center;border:2px solid var(--line);background:var(--bg2);position:relative;overflow:hidden;transition:border-color .3s}
-.p-panel.p1.serving{border-color:var(--p1);animation:glowP1 2s ease-in-out infinite}
-.p-panel.p2.serving{border-color:var(--p2);animation:glowP2 2s ease-in-out infinite}
-.p-panel.p1::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(232,64,28,.07),transparent 55%);pointer-events:none}
-.p-panel.p2::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(14,165,196,.07),transparent 55%);pointer-events:none}
+/* Who is serving dot */
+.svo{display:flex;justify-content:center;gap:6px;margin-top:8px;min-height:24px}
+.svd{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;border:2px solid var(--pc);color:var(--pc);transition:all .3s;cursor:default}
+.svd.cur{background:var(--pc);color:#fff;box-shadow:0 0 9px var(--pc)}
+.svd.used{opacity:.28;border-style:dashed}
 
-.srv-dot{position:absolute;top:10px;left:50%;transform:translateX(-50%);font-size:15px;opacity:0;transition:opacity .3s;animation:blink 1.4s ease-in-out infinite}
-.serving .srv-dot{opacity:1}
+/* Score buttons */
+.scbtn{width:100%;padding:11px;border-radius:9px;border:none;cursor:pointer;font-family:var(--fh);font-size:16px;font-weight:700;color:#fff;margin-top:12px;transition:transform .12s,opacity .2s;background:var(--pc)}
+.scbtn:hover:not(:disabled){transform:translateY(-2px)}
+.scbtn:active:not(:disabled){transform:scale(.96)}
+.scbtn:disabled{opacity:.22;cursor:not-allowed}
+.fltbtn{width:100%;padding:8px;border-radius:9px;border:2px solid rgba(255,255,255,.08);cursor:pointer;font-family:var(--fh);font-size:13px;font-weight:600;background:transparent;color:var(--muted);margin-top:5px;transition:all .2s}
+.fltbtn:hover:not(:disabled){border-color:var(--red);color:var(--red);background:rgba(239,68,68,.06)}
+.fltbtn:disabled{opacity:.18;cursor:not-allowed}
 
-.p-name{font-family:var(--font-h);font-size:19px;font-weight:700;margin-top:18px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.p-panel.p1 .p-name{color:var(--p1)}
-.p-panel.p2 .p-name{color:var(--p2)}
-.p-sub{font-size:11px;color:var(--muted);margin-bottom:12px;min-height:15px}
-.p-score{font-family:var(--font-h);font-size:100px;font-weight:700;line-height:1;letter-spacing:-2px;display:block;transition:transform .12s}
-.p-panel.p1 .p-score{color:var(--p1);text-shadow:0 0 60px rgba(232,64,28,.25)}
-.p-panel.p2 .p-score{color:var(--p2);text-shadow:0 0 60px rgba(14,165,196,.25)}
-.p-score.pop{animation:popBig .2s ease}
-
-.sets-bar{display:flex;gap:6px;justify-content:center;margin-top:8px}
-.set-gem{width:13px;height:13px;border-radius:50%;transition:all .3s}
-.p-panel.p1 .set-gem{border:2px solid var(--p1)}
-.p-panel.p2 .set-gem{border:2px solid var(--p2)}
-.p-panel.p1 .set-gem.won{background:var(--p1);box-shadow:0 0 9px rgba(232,64,28,.7)}
-.p-panel.p2 .set-gem.won{background:var(--p2);box-shadow:0 0 9px rgba(14,165,196,.7)}
-
-.svc-order{display:flex;justify-content:center;gap:7px;margin-top:9px;flex-wrap:wrap;min-height:20px}
-.svc-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;transition:all .3s;cursor:default}
-.p-panel.p1 .svc-dot{border:2px solid var(--p1);color:var(--p1)}
-.p-panel.p2 .svc-dot{border:2px solid var(--p2);color:var(--p2)}
-.p-panel.p1 .svc-dot.cur{background:var(--p1);color:#fff;box-shadow:0 0 10px rgba(232,64,28,.6)}
-.p-panel.p2 .svc-dot.cur{background:var(--p2);color:#fff;box-shadow:0 0 10px rgba(14,165,196,.6)}
-.svc-dot.used{opacity:.3;border-style:dashed}
-
-.score-btn{width:100%;padding:12px;border-radius:10px;border:none;cursor:pointer;font-family:var(--font-h);font-size:17px;font-weight:700;letter-spacing:.5px;color:#fff;margin-top:14px;transition:transform .12s,opacity .2s}
-.p-panel.p1 .score-btn{background:var(--p1);box-shadow:0 4px 16px rgba(232,64,28,.4)}
-.p-panel.p2 .score-btn{background:var(--p2);box-shadow:0 4px 16px rgba(14,165,196,.4)}
-.score-btn:hover{transform:translateY(-2px)}
-.score-btn:active{transform:scale(.96)}
-.score-btn:disabled{opacity:.25;cursor:not-allowed;transform:none !important}
-
-.fault-btn{width:100%;padding:9px;border-radius:10px;border:2px solid rgba(255,255,255,.08);cursor:pointer;font-family:var(--font-h);font-size:14px;font-weight:600;background:transparent;color:var(--muted);margin-top:6px;transition:all .2s}
-.fault-btn:hover:not(:disabled){border-color:var(--red);color:var(--red);background:rgba(239,68,68,.07)}
-.fault-btn:disabled{opacity:.2;cursor:not-allowed}
-
-/* Center */
-.sc-ctr{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px}
-.vs{font-family:var(--font-h);font-size:20px;font-weight:700;color:rgba(255,255,255,.1)}
-.deuce-tag{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:4px 8px;border-radius:20px;background:rgba(245,197,66,.15);color:var(--gold);border:1px solid rgba(245,197,66,.3);display:none;animation:blink 1.1s ease-in-out infinite}
-.deuce-tag.show{display:block}
-.set-lbl{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1px;text-align:center}
+/* Center col */
+.scc{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.vs{font-family:var(--fh);font-size:18px;font-weight:700;color:rgba(255,255,255,.1)}
+.deuce{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border-radius:20px;background:rgba(245,197,66,.14);color:var(--gold);border:1px solid rgba(245,197,66,.28);display:none;animation:blink 1.1s ease-in-out infinite}
+.deuce.show{display:block}
+.slbl{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:1px;text-align:center}
 
 /* Court */
-.court-card{background:var(--bg2);border-radius:var(--card);border:1px solid var(--line);padding:16px}
-.court-card h4{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
-.court-svg{width:100%;height:auto;display:block}
+.court-card{background:var(--bg2);border-radius:14px;border:1px solid var(--line);padding:14px}
+.court-card h4{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.crt{width:100%;height:auto;display:block}
 
-/* KB hints */
-.kb-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:4px 0}
-.kb-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted)}
-.kb-item kbd{background:var(--bg3);border:1px solid var(--line);border-radius:4px;padding:2px 7px;font-size:11px;font-family:monospace;color:var(--text)}
+/* KB */
+.kbr{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:3px 0}
+.kbi{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)}
+.kbi kbd{background:var(--bg3);border:1px solid var(--line);border-radius:4px;padding:2px 6px;font-size:10px;font-family:monospace;color:var(--text)}
 
-/* Sidebar */
+/* ══ SIDEBAR ═════════════════════════════════════════════════ */
 .sidebar{border-left:1px solid var(--line);background:var(--bg2);display:flex;flex-direction:column;overflow:hidden}
 .stabs{display:flex;border-bottom:1px solid var(--line)}
-.stab{flex:1;padding:13px 6px;border:none;background:transparent;cursor:pointer;font-family:var(--font-b);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}
+.stab{flex:1;padding:12px 4px;border:none;background:transparent;cursor:pointer;font-family:var(--fb);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}
 .stab.on{color:var(--p1);border-bottom-color:var(--p1)}
-.spanel{display:none;flex:1;overflow-y:auto;padding:14px}
+.spanel{display:none;flex:1;overflow-y:auto;padding:12px}
 .spanel.on{display:block}
 
-.r-empty{text-align:center;padding:36px 14px;color:var(--muted);font-size:13px;line-height:1.9}
-.r-item{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:8px;margin-bottom:3px;border-left:3px solid rgba(255,255,255,.08)}
-.r-item.pt1{border-color:var(--p1);background:rgba(232,64,28,.06)}
-.r-item.pt2{border-color:var(--p2);background:rgba(14,165,196,.06)}
-.r-item.sv{border-color:rgba(255,255,255,.1);background:rgba(255,255,255,.02)}
-.r-num{font-size:10px;color:var(--muted);width:22px;text-align:right}
-.r-icon{font-size:12px;width:18px;text-align:center}
-.r-txt{flex:1;font-size:12px;font-weight:600}
-.r-sc{font-family:monospace;font-size:12px;font-weight:700;color:var(--muted)}
-.r-item.pt1 .r-txt{color:var(--p1)}
-.r-item.pt2 .r-txt{color:var(--p2)}
-.r-item.sv .r-txt{color:rgba(255,255,255,.4)}
+/* Rally Log */
+.re{text-align:center;padding:32px 12px;color:var(--muted);font-size:13px;line-height:1.9}
+.ri2{display:flex;align-items:center;gap:6px;padding:7px 9px;border-radius:7px;margin-bottom:3px;border-left:3px solid rgba(255,255,255,.06)}
+.ri2.w1{border-color:var(--p1);background:rgba(232,64,28,.055)}
+.ri2.w2{border-color:var(--p2);background:rgba(14,165,196,.055)}
+.ri2.f{border-color:rgba(255,255,255,.09);background:rgba(255,255,255,.018)}
+.rn{font-size:10px;color:var(--muted);width:20px;text-align:right}
+.ric{font-size:12px;width:17px;text-align:center}
+.rt{flex:1;font-size:12px;font-weight:600}
+.rsc{font-family:monospace;font-size:12px;font-weight:700;color:var(--muted)}
+.ri2.w1 .rt{color:var(--p1)}.ri2.w2 .rt{color:var(--p2)}.ri2.f .rt{color:rgba(255,255,255,.38)}
 
-.stat-prog{margin-bottom:16px}
-.prog-bg{height:7px;border-radius:4px;background:var(--bg3);overflow:hidden}
-.prog-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--p1),var(--p2));transition:width .5s}
-.prog-lbl{display:flex;justify-content:space-between;margin-top:4px}
-.prog-lbl span{font-size:11px;color:var(--muted)}
-.stat-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)}
-.stat-row:last-child{border:none}
-.sv1,.sv2{font-family:var(--font-h);font-size:24px;font-weight:700;width:44px;text-align:center}
-.sv1{color:var(--p1)}.sv2{color:var(--p2)}
-.sl{font-size:12px;font-weight:600;color:var(--muted);flex:1;text-align:center}
+/* ══ STATS PANEL ════════════════════════════════════════════ */
+.stats-section{margin-bottom:16px}
+.ss-head{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 0 8px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.ss-head.c1{color:var(--p1)}.ss-head.c2{color:var(--p2)}.ss-head.ct{color:var(--muted)}
 
-.sets-tbl{width:100%;border-collapse:collapse;margin-top:4px}
-.sets-tbl th{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding:5px 8px;text-align:center;border-bottom:1px solid var(--line)}
-.sets-tbl td{padding:9px 8px;text-align:center;font-size:14px;font-weight:700}
-.sets-tbl tr:not(:last-child) td{border-bottom:1px solid var(--line)}
-.wc1{color:var(--p1)}.wc2{color:var(--p2)}.sc{color:var(--muted);font-size:11px}
+/* Team progress bar */
+.pb-wrap{margin-bottom:12px}
+.pb-bg{height:7px;border-radius:4px;background:var(--bg3);overflow:hidden}
+.pb-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--p1),var(--p2));transition:width .5s}
+.pb-lbl{display:flex;justify-content:space-between;margin-top:4px}
+.pb-lbl span{font-size:11px;color:var(--muted)}
 
+/* Stat rows */
+.str{display:flex;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.str:last-child{border:none}
+.str-lbl{font-size:11px;color:var(--muted);flex:1}
+.str-val{font-family:var(--fh);font-size:20px;font-weight:700;width:40px;text-align:center}
+.str-val.c1{color:var(--p1)}.str-val.c2{color:var(--p2)}
+
+/* Player stat card */
+.psc{background:var(--bg3);border-radius:10px;padding:12px;margin-bottom:10px;border:1px solid var(--line)}
+.psc-head{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.psc-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.psc-name{font-size:13px;font-weight:700}
+.psc-role{font-size:10px;color:var(--muted);margin-left:auto}
+.psc-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.psc-stat{text-align:center;background:var(--bg2);border-radius:7px;padding:7px 5px}
+.psc-val{font-family:var(--fh);font-size:22px;font-weight:700;line-height:1}
+.psc-key{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+
+/* ══ MATCH OVER ══════════════════════════════════════════════ */
 #mo{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.88);backdrop-filter:blur(8px);align-items:center;justify-content:center}
 #mo.show{display:flex}
-.mo-card{background:var(--bg2);border-radius:22px;padding:48px 52px;text-align:center;border:1px solid var(--line);box-shadow:0 32px 80px rgba(0,0,0,.6);max-width:460px;width:90%;animation:fadeUp .35s cubic-bezier(.34,1.56,.64,1)}
-.mo-trophy{font-size:68px;display:block;margin-bottom:14px}
-.mo-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-.mo-winner{font-family:var(--font-h);font-size:48px;font-weight:700;line-height:1;color:var(--p1);margin-bottom:6px}
-.mo-sub{color:var(--muted);font-size:14px;margin-bottom:24px}
-.mo-sets{display:flex;gap:8px;justify-content:center;margin-bottom:26px;flex-wrap:wrap}
-.mo-set{padding:7px 16px;border-radius:9px;background:var(--bg3);border:1px solid var(--line);font-size:14px;font-weight:700}
-.mo-btns{display:flex;gap:9px;justify-content:center}
-.mo-btn{padding:12px 26px;border-radius:10px;border:none;cursor:pointer;font-family:var(--font-b);font-size:14px;font-weight:700;transition:all .2s}
-.mo-p{background:linear-gradient(135deg,var(--p1),#ff7043);color:#fff;box-shadow:0 4px 18px rgba(232,64,28,.4)}
-.mo-p:hover{transform:translateY(-1px)}
-.mo-s{background:var(--bg3);color:var(--muted);border:1px solid var(--line)}
-.mo-s:hover{color:var(--text)}
+.moc{background:var(--bg2);border-radius:20px;padding:44px 50px;text-align:center;border:1px solid var(--line);box-shadow:0 28px 72px rgba(0,0,0,.6);max-width:500px;width:92%;animation:slideUp .38s cubic-bezier(.34,1.56,.64,1);max-height:90vh;overflow-y:auto}
+.mo-tr{font-size:60px;display:block;margin-bottom:12px}
+.mo-lbl{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.mo-win{font-family:var(--fh);font-size:44px;font-weight:700;line-height:1;margin-bottom:5px}
+.mo-sub{color:var(--muted);font-size:14px;margin-bottom:20px}
+.mo-sc{font-family:var(--fh);font-size:36px;font-weight:700;margin-bottom:24px}
+/* Player stats in match over */
+.mo-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:24px;text-align:left}
+.mo-pcard{background:var(--bg3);border-radius:10px;padding:12px;border:1px solid var(--line)}
+.mo-pname{font-size:12px;font-weight:700;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.mo-prow{display:flex;justify-content:space-between;font-size:11px;padding:3px 0;border-bottom:1px solid var(--line);color:var(--muted)}
+.mo-prow:last-child{border:none}
+.mo-prow span:last-child{font-weight:700;color:var(--text)}
+.mo-btns{display:flex;gap:8px;justify-content:center}
+.mob{padding:11px 24px;border-radius:9px;border:none;cursor:pointer;font-family:var(--fb);font-size:14px;font-weight:700;transition:all .2s}
+.mob.p{background:linear-gradient(135deg,var(--p1),#ff7043);color:#fff;box-shadow:0 4px 16px rgba(232,64,28,.4)}
+.mob.p:hover{transform:translateY(-1px)}
+.mob.s{background:var(--bg3);color:var(--muted);border:1px solid var(--line)}
+.mob.s:hover{color:var(--text)}
 
-#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--bg3);color:var(--text);border:1px solid var(--line);padding:8px 18px;border-radius:30px;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.5);z-index:300;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--bg3);color:var(--text);border:1px solid var(--line);padding:8px 18px;border-radius:28px;font-size:13px;font-weight:600;box-shadow:0 6px 22px rgba(0,0,0,.5);z-index:300;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
 #toast.show{opacity:1}
-.conf{position:fixed;width:8px;height:8px;border-radius:2px;animation:confettiFall 1.8s ease-in forwards;pointer-events:none;z-index:200}
+.conf{position:fixed;width:8px;height:8px;border-radius:2px;animation:fall 1.8s ease-in forwards;pointer-events:none;z-index:200}
 
-@media(max-width:980px){
-  .game-body{grid-template-columns:1fr}
-  .sidebar{border-left:none;border-top:1px solid var(--line);max-height:260px}
-  .setup-top{grid-template-columns:1fr}
-  .setup-div{display:none}
-  .setup-col{padding:26px}
-}
-@media(max-width:600px){
-  .p-score{font-size:70px}.scoreboard{gap:8px}.p-panel{padding:14px 10px}.p-name{font-size:14px}
-  .topbar{padding:9px 12px}.kb-row{display:none}
-}
+@media(max-width:960px){.gb{grid-template-columns:1fr}.sidebar{border-left:none;border-top:1px solid var(--line);max-height:260px}.sw-top{grid-template-columns:1fr}.sd{display:none}.sc{padding:24px}}
+@media(max-width:600px){.big-sc{font-size:68px}.scoreboard{gap:7px}.pp{padding:13px 9px}.pn{font-size:14px}.tb{padding:8px 11px}.kbr{display:none}}
 </style>
 </head>
 <body>
 
-<!-- ══ SETUP ══════════════════════════════════════════════════ -->
+<!-- ══ SETUP ═════════════════════════════════════════════════ -->
 <div id="setup">
   <div class="logo">
-    <svg width="44" height="44" viewBox="0 0 44 44">
-      <circle cx="22" cy="12" r="8" fill="#E8401C" opacity=".92"/>
-      <path d="M22 20L16 42M22 20L19 42M22 20L22 42M22 20L25 42M22 20L28 42" stroke="#E8401C" stroke-width="2.4" stroke-linecap="round" opacity=".55"/>
-      <ellipse cx="22" cy="42" rx="6" ry="2.2" fill="#E8401C" opacity=".2"/>
+    <svg width="42" height="42" viewBox="0 0 42 42">
+      <circle cx="21" cy="11" r="8" fill="#E8401C" opacity=".92"/>
+      <path d="M21 19L15 41M21 19L18 41M21 19L21 41M21 19L24 41M21 19L27 41" stroke="#E8401C" stroke-width="2.3" stroke-linecap="round" opacity=".55"/>
+      <ellipse cx="21" cy="41" rx="5.5" ry="2" fill="#E8401C" opacity=".2"/>
     </svg>
-    <div class="logo-text">SMASH<em>SCORE</em></div>
+    <div class="logo-txt">SMASH<em>SCORE</em></div>
   </div>
-  <p class="logo-sub">Badminton Match Tracker</p>
-  <div class="rule-tag">🏸 Traditional Hand-In / Hand-Out Scoring</div>
+  <p class="logo-sub">Traditional Badminton — Hand In / Hand Out</p>
+  <div class="rule-pill">🏸 Single Set · 15 pts · Deuce 14-14 → Max 16</div>
 
-  <div class="setup-wrap">
-    <div class="setup-top">
-      <!-- Left -->
-      <div class="setup-col">
-        <div class="sec-head">Game Mode</div>
-        <div class="tog-row">
-          <button class="tog on" id="m-singles" onclick="setMode('singles')">Singles</button>
-          <button class="tog"    id="m-doubles" onclick="setMode('doubles')">Doubles</button>
+  <div class="sw">
+    <div class="sw-top">
+      <!-- LEFT: Players -->
+      <div class="sc">
+        <div class="sh">Game Mode</div>
+        <div class="tr">
+          <button class="tg on" id="m-s" onclick="setMode('singles')">Singles</button>
+          <button class="tg"    id="m-d" onclick="setMode('doubles')">Doubles</button>
         </div>
 
-        <div class="sec-head">Team / Player 1 <span style="color:var(--p1)">●</span></div>
-        <div class="field-mb">
-          <input id="p1n" class="p1c" type="text" value="Player 1" placeholder="Name…"/>
-          <input id="p1p" class="p1c" type="text" value="Player 3" placeholder="Partner name…" style="display:none;margin-top:8px"/>
-        </div>
+        <div class="sh">Team A — First Server <span style="color:var(--p1)">●</span></div>
+        <input id="p1n" class="p1c" type="text" value="Player A1" placeholder="Player name…"/>
+        <input id="p1p" class="p1c" type="text" value="Player A2" placeholder="Partner name (doubles)…" style="display:none;margin-top:7px"/>
 
-        <div class="sec-head">Team / Player 2 <span style="color:var(--p2)">●</span></div>
-        <div class="field-mb">
-          <input id="p2n" class="p2c" type="text" value="Player 2" placeholder="Name…"/>
-          <input id="p2p" class="p2c" type="text" value="Player 4" placeholder="Partner name…" style="display:none;margin-top:8px"/>
-        </div>
-
-        <div class="sec-head">First Service</div>
-        <div class="tog-row">
-          <button class="tog on" id="s1" onclick="setFS(1)">Team 1 Serves</button>
-          <button class="tog"    id="s2" onclick="setFS(2)">Team 2 Serves</button>
-        </div>
+        <div class="sh">Team B <span style="color:var(--p2)">●</span></div>
+        <input id="p2n" class="p2c" type="text" value="Player B1" placeholder="Player name…"/>
+        <input id="p2p" class="p2c" type="text" value="Player B2" placeholder="Partner name (doubles)…" style="display:none;margin-top:7px"/>
       </div>
 
-      <div class="setup-div"></div>
+      <div class="sd"></div>
 
-      <!-- Right -->
-      <div class="setup-col">
-        <div class="sec-head">Scoring Format</div>
-        <button class="fmt-btn on" onclick="setFmt('std')">
-          <div><div class="fmt-name">Standard (Traditional)</div><div class="fmt-desc">Best of 3 · 21 pts · Deuce at 20-20</div></div>
-          <span class="fmt-badge">Official</span>
-        </button>
-        <button class="fmt-btn" onclick="setFmt('sh')">
-          <div><div class="fmt-name">Short Game</div><div class="fmt-desc">Best of 3 · 15 pts · Deuce at 14-14</div></div>
-        </button>
-        <button class="fmt-btn" onclick="setFmt('one')">
-          <div><div class="fmt-name">Single Set</div><div class="fmt-desc">1 set · 21 pts</div></div>
-        </button>
-        <button class="fmt-btn" onclick="setFmt('cus')">
-          <div><div class="fmt-name">Custom</div><div class="fmt-desc" id="cus-desc">Set your own points</div></div>
-        </button>
-        <div id="cus-fields">
-          <div><label>Win at</label><input id="c-pts"  class="p1c" type="number" value="21" min="3" max="50"/></div>
-          <div><label>Max pts</label><input id="c-max"  class="p1c" type="number" value="30" min="3" max="60"/></div>
-          <div><label>Sets win</label><input id="c-sets" class="p1c" type="number" value="2" min="1" max="5"/></div>
+      <!-- RIGHT: Rules -->
+      <div class="sc">
+        <div class="sh">Scoring Rules</div>
+        <div class="sc-cfg">
+          <div class="sc-field">
+            <label>Win at (pts)</label>
+            <input id="win-pts" class="p1c" type="number" value="15" min="5" max="50"/>
+          </div>
+          <div class="sc-field">
+            <label>Deuce at</label>
+            <input id="deuce-pts" class="p1c" type="number" value="14" min="3" max="49"/>
+          </div>
+          <div class="sc-field">
+            <label>Max pts</label>
+            <input id="max-pts" class="p1c" type="number" value="16" min="5" max="60"/>
+          </div>
         </div>
 
-        <div class="rule-card">
-          <div class="rule-card-title">📜 Your Game Rules</div>
-          <div class="rule-item"><div class="rule-dot"></div>Server keeps serving while winning rallies — earns 1 point each win</div>
-          <div class="rule-item"><div class="rule-dot"></div>Server loses rally → service transfers, NO point for the receiver</div>
-          <div class="rule-item" id="rd1" style="display:none"><div class="rule-dot"></div>Match start: serving team gets only 1 hand (one fault → lose serve)</div>
-          <div class="rule-item" id="rd2" style="display:none"><div class="rule-dot"></div>Doubles fault: partner serves next; if partner also faults → opponent team serves</div>
-          <div class="rule-item" id="rd3" style="display:none"><div class="rule-dot"></div>New server on opponent team = player diagonally opposite in court</div>
+        <div class="rc">
+          <div class="rc-t">📜 Your Exact Rules</div>
+          <div class="ri"><div class="rd"></div>Team A starts with <strong>1 hand only</strong> — if they lose a rally, service goes straight to Team B (no second person of Team A)</div>
+          <div class="ri"><div class="rd"></div>Team B gets <strong>2 hands</strong> — B1 faults → B2 serves → B2 faults → back to Team A (now with 2 hands)</div>
+          <div class="ri"><div class="rd"></div>Server wins rally → <strong>+1 point</strong>, keeps serving. Loses rally → <strong>no point</strong>, service transfers</div>
+          <div class="ri"><div class="rd"></div>At <strong>14-14 deuce</strong> — first to get 2-point lead wins, capped at <strong>16-16</strong> (next point wins)</div>
+          <div class="ri id" style="display:none"><div class="rd"></div>New server on incoming team = player <strong>diagonally opposite</strong> to last server</div>
         </div>
       </div>
     </div>
 
-    <div class="setup-footer">
-      <div class="kbd-hint">Keys during game: <kbd>A</kbd> P1 wins &nbsp;<kbd>L</kbd> P2 wins &nbsp;<kbd>Q</kbd> P1 fault &nbsp;<kbd>P</kbd> P2 fault &nbsp;<kbd>Z</kbd> Undo</div>
-      <button class="start-btn" onclick="startMatch()">🏸 Start Match</button>
+    <div class="sf">
+      <div class="kh">Keys: <kbd>A</kbd> Team A wins &nbsp;<kbd>L</kbd> Team B wins &nbsp;<kbd>Q</kbd> Team A fault &nbsp;<kbd>P</kbd> Team B fault &nbsp;<kbd>Z</kbd> Undo</div>
+      <button class="sb" onclick="startMatch()">🏸 Start Match</button>
     </div>
   </div>
 </div>
 
-<!-- ══ GAME ════════════════════════════════════════════════════ -->
+<!-- ══ GAME ══════════════════════════════════════════════════ -->
 <div id="game">
-  <div class="topbar">
-    <div class="tb-brand">SMASH<em>SCORE</em></div>
-    <div class="tb-center">
+  <div class="tb">
+    <div class="tb-br">SMASH<em>SCORE</em></div>
+    <div class="tb-c">
       <span class="pill" id="gm-pill">Singles</span>
-      <span class="pill" id="set-pill">Set 1 of 3</span>
+      <span class="pill" id="sc-pill">15 pts · Deuce 14-14</span>
       <button class="tmr" id="tmr-btn" onclick="toggleTimer()">00:00</button>
     </div>
-    <div class="tb-right">
-      <button class="tb-btn" onclick="undoLast()">↩ Undo</button>
-      <button class="tb-btn" onclick="resetMatch()">↺ Reset</button>
-      <button class="tb-btn" onclick="goSetup()">‹ Setup</button>
+    <div class="tb-r">
+      <button class="tbb" onclick="undoLast()">↩ Undo</button>
+      <button class="tbb" onclick="resetMatch()">↺ Reset</button>
+      <button class="tbb" onclick="goSetup()">‹ Setup</button>
     </div>
   </div>
 
-  <div class="game-body">
-    <div class="score-area">
+  <div class="gb">
+    <!-- Score Area -->
+    <div class="sa">
 
       <!-- Serve banner -->
-      <div class="srv-banner">
-        <div class="srv-shuttle" id="srv-shuttle">🏸</div>
-        <div>
-          <div class="srv-who" id="srv-who">Player 1 is serving</div>
-          <div class="srv-note" id="srv-note">Win the rally to score. Lose it — no point, service transfers.</div>
+      <div class="svb">
+        <div class="svb-ic" id="svb-ic">🏸</div>
+        <div style="flex:1">
+          <div class="svb-w" id="svb-w">Player A1 is serving</div>
+          <div class="svb-n" id="svb-n">Win → +1 point, keep serving. Fault → service transfers.</div>
+          <div class="hands-row" id="hands-row"></div>
         </div>
       </div>
 
-      <!-- Set history chips -->
-      <div class="set-chips" id="set-chips">
-        <span style="font-size:11px;color:var(--muted);font-weight:700;letter-spacing:1px">SETS:</span>
+      <!-- Score status -->
+      <div class="score-info" id="score-info">
+        <span>Win at <strong id="si-win">15</strong> pts</span>
+        <span>·</span>
+        <span>Deuce at <strong id="si-deuce">14-14</strong></span>
+        <span>·</span>
+        <span>Max <strong id="si-max">16</strong> pts</span>
       </div>
 
       <!-- Scoreboard -->
       <div class="scoreboard">
-        <!-- P1 -->
-        <div class="p-panel p1" id="pp1">
-          <div class="srv-dot">🏸</div>
-          <div class="p-name" id="d-p1n">Player 1</div>
-          <div class="p-sub"  id="d-p1s"></div>
-          <span class="p-score" id="sc1">00</span>
-          <div class="sets-bar" id="sb1"></div>
-          <div class="svc-order" id="svo1"></div>
-          <button class="score-btn" id="b1w" onclick="rallyWin(1)">✅ P1 Wins Rally &nbsp;<small>[A]</small></button>
-          <button class="fault-btn"  id="b1f" onclick="rallyFault(1)">❌ P1 Fault / Out &nbsp;<small>[Q]</small></button>
+        <!-- Team A -->
+        <div class="pp p1" id="pp1">
+          <div class="srv-d">🏸</div>
+          <div class="pn" id="d-p1n">Team A</div>
+          <div class="ps" id="d-p1s"></div>
+          <span class="big-sc" id="sc1">00</span>
+          <div class="svo" id="svo1"></div>
+          <button class="scbtn" id="b1w" onclick="rallyWin(1)" style="background:var(--p1)">✅ Team A Wins Rally <small style="font-size:11px;opacity:.7">[A]</small></button>
+          <button class="fltbtn" id="b1f" onclick="rallyFault(1)">❌ Team A Fault / Out <small style="font-size:11px;opacity:.7">[Q]</small></button>
         </div>
 
         <!-- Center -->
-        <div class="sc-ctr">
-          <div class="set-lbl" id="set-lbl">SET 1</div>
+        <div class="scc">
+          <div class="slbl">GAME</div>
           <div class="vs">VS</div>
-          <div class="deuce-tag" id="dtag">DEUCE</div>
+          <div class="deuce" id="dtag">DEUCE</div>
         </div>
 
-        <!-- P2 -->
-        <div class="p-panel p2" id="pp2">
-          <div class="srv-dot">🏸</div>
-          <div class="p-name" id="d-p2n">Player 2</div>
-          <div class="p-sub"  id="d-p2s"></div>
-          <span class="p-score" id="sc2">00</span>
-          <div class="sets-bar" id="sb2"></div>
-          <div class="svc-order" id="svo2"></div>
-          <button class="score-btn" id="b2w" onclick="rallyWin(2)">✅ P2 Wins Rally &nbsp;<small>[L]</small></button>
-          <button class="fault-btn"  id="b2f" onclick="rallyFault(2)">❌ P2 Fault / Out &nbsp;<small>[P]</small></button>
+        <!-- Team B -->
+        <div class="pp p2" id="pp2">
+          <div class="srv-d">🏸</div>
+          <div class="pn" id="d-p2n">Team B</div>
+          <div class="ps" id="d-p2s"></div>
+          <span class="big-sc" id="sc2">00</span>
+          <div class="svo" id="svo2"></div>
+          <button class="scbtn" id="b2w" onclick="rallyWin(2)" style="background:var(--p2)">✅ Team B Wins Rally <small style="font-size:11px;opacity:.7">[L]</small></button>
+          <button class="fltbtn" id="b2f" onclick="rallyFault(2)">❌ Team B Fault / Out <small style="font-size:11px;opacity:.7">[P]</small></button>
         </div>
       </div>
 
       <!-- Court -->
       <div class="court-card">
-        <h4>Court — Service Box</h4>
-        <svg class="court-svg" viewBox="0 0 420 200" xmlns="http://www.w3.org/2000/svg">
+        <h4>Court — Service Position</h4>
+        <svg class="crt" viewBox="0 0 420 200" xmlns="http://www.w3.org/2000/svg">
           <rect width="420" height="200" rx="3" fill="#0a170a"/>
-          <!-- Outer boundary -->
           <rect x="10" y="10" width="400" height="180" fill="none" stroke="#2a5e2a" stroke-width="2"/>
-          <!-- Singles sidelines -->
           <rect x="28" y="10" width="364" height="180" fill="none" stroke="#1e4a1e" stroke-width="1"/>
-          <!-- Center line -->
           <line x1="210" y1="10" x2="210" y2="190" stroke="#2a5e2a" stroke-width="2"/>
-          <!-- Short service lines -->
           <line x1="10" y1="58" x2="410" y2="58" stroke="#2a5e2a" stroke-width="1.5"/>
           <line x1="10" y1="142" x2="410" y2="142" stroke="#2a5e2a" stroke-width="1.5"/>
-          <!-- Long service lines (doubles back) -->
           <line x1="10" y1="22" x2="410" y2="22" stroke="#1e4a1e" stroke-width="1" stroke-dasharray="5,4"/>
           <line x1="10" y1="178" x2="410" y2="178" stroke="#1e4a1e" stroke-width="1" stroke-dasharray="5,4"/>
-          <!-- Center service line (only between short service lines) -->
           <line x1="210" y1="58" x2="210" y2="142" stroke="#1e4a1e" stroke-width="1"/>
-          <!-- Net -->
           <line x1="210" y1="10" x2="210" y2="190" stroke="#5aaa5a" stroke-width="4" opacity=".6"/>
-          <!-- Labels -->
-          <text x="110" y="104" text-anchor="middle" fill="#2a5e2a" font-size="11" font-weight="600" font-family="Arial" opacity=".7">TEAM 1</text>
-          <text x="310" y="104" text-anchor="middle" fill="#2a5e2a" font-size="11" font-weight="600" font-family="Arial" opacity=".7">TEAM 2</text>
-          <!-- Service box labels -->
-          <text x="75"  y="85" text-anchor="middle" fill="#1e4a1e" font-size="8" font-family="Arial" opacity=".6">RIGHT</text>
-          <text x="148" y="85" text-anchor="middle" fill="#1e4a1e" font-size="8" font-family="Arial" opacity=".6">LEFT</text>
-          <text x="272" y="85" text-anchor="middle" fill="#1e4a1e" font-size="8" font-family="Arial" opacity=".6">LEFT</text>
-          <text x="345" y="85" text-anchor="middle" fill="#1e4a1e" font-size="8" font-family="Arial" opacity=".6">RIGHT</text>
-          <!-- Serve position markers (JS-controlled via setAttribute) -->
-          <circle id="cm1" cx="75" cy="120" r="9" fill="#E8401C" opacity="0"/>
-          <circle id="cm2" cx="345" cy="80"  r="9" fill="#0EA5C4" opacity="0"/>
-          <!-- Serve arrow -->
-          <line id="sv-arr" x1="75" y1="120" x2="210" y2="100" stroke="#fff" stroke-width="1.5" stroke-dasharray="4,3" opacity="0"/>
-          <polygon id="sv-head" points="210,95 205,105 215,105" fill="#fff" opacity="0"/>
+          <text x="110" y="104" text-anchor="middle" fill="#2a5e2a" font-size="11" font-weight="600" font-family="Arial" opacity=".7">TEAM A</text>
+          <text x="310" y="104" text-anchor="middle" fill="#2a5e2a" font-size="11" font-weight="600" font-family="Arial" opacity=".7">TEAM B</text>
+          <text x="72"  y="83" text-anchor="middle" fill="#1e4a1e" font-size="8" font-family="Arial" opacity=".6">RIGHT</text>
+          <text x="148" y="83" text-anchor="middle" fill="#1e4a1e" font-size="8" font-family="Arial" opacity=".6">LEFT</text>
+          <text x="272" y="83" text-anchor="middle" fill="#1e4a1e" font-size="8" font-family="Arial" opacity=".6">LEFT</text>
+          <text x="348" y="83" text-anchor="middle" fill="#1e4a1e" font-size="8" font-family="Arial" opacity=".6">RIGHT</text>
+          <circle id="cm1" cx="72"  cy="125" r="9" fill="#E8401C" opacity="0"/>
+          <circle id="cm2" cx="348" cy="75"  r="9" fill="#0EA5C4" opacity="0"/>
+          <line   id="sv-arr"  x1="72" y1="125" x2="210" y2="100" stroke="#fff" stroke-width="1.5" stroke-dasharray="4,3" opacity="0"/>
+          <polygon id="sv-head" points="210,94 204,106 216,106" fill="#fff" opacity="0"/>
         </svg>
       </div>
 
-      <!-- Keyboard hints -->
-      <div class="kb-row">
-        <div class="kb-item"><kbd>A</kbd> P1 wins rally</div>
-        <div class="kb-item"><kbd>L</kbd> P2 wins rally</div>
-        <div class="kb-item"><kbd>Q</kbd> P1 fault</div>
-        <div class="kb-item"><kbd>P</kbd> P2 fault</div>
-        <div class="kb-item"><kbd>Z</kbd> Undo</div>
-        <div class="kb-item"><kbd>Space</kbd> Timer</div>
+      <!-- KB hints -->
+      <div class="kbr">
+        <div class="kbi"><kbd>A</kbd> Team A wins</div>
+        <div class="kbi"><kbd>L</kbd> Team B wins</div>
+        <div class="kbi"><kbd>Q</kbd> Team A fault</div>
+        <div class="kbi"><kbd>P</kbd> Team B fault</div>
+        <div class="kbi"><kbd>Z</kbd> Undo</div>
+        <div class="kbi"><kbd>Space</kbd> Timer</div>
       </div>
     </div>
 
@@ -455,32 +415,33 @@ input+input{margin-top:8px}
     <div class="sidebar">
       <div class="stabs">
         <button class="stab on" onclick="switchTab('log')">Rally Log</button>
-        <button class="stab"    onclick="switchTab('stats')">Stats</button>
-        <button class="stab"    onclick="switchTab('sets')">Sets</button>
+        <button class="stab"    onclick="switchTab('stats')">Team Stats</button>
+        <button class="stab"    onclick="switchTab('players')">Players</button>
       </div>
+
+      <!-- Rally Log -->
       <div class="spanel on" id="sp-log">
-        <div class="r-empty" id="r-empty">🏸<br/>No rallies yet.<br/>Press <strong>A</strong> or <strong>L</strong> to score.</div>
+        <div class="re" id="r-empty">🏸<br/>No rallies yet.<br/>Press <strong>A</strong> or <strong>L</strong> to start.</div>
         <div id="r-list"></div>
       </div>
+
+      <!-- Team Stats -->
       <div class="spanel" id="sp-stats">
-        <div class="stat-prog">
-          <div class="prog-bg"><div class="prog-fill" id="prog" style="width:50%"></div></div>
-          <div class="prog-lbl"><span id="pl1">P1</span><span>Points Share</span><span id="pl2">P2</span></div>
+        <div class="pb-wrap">
+          <div class="pb-bg"><div class="pb-fill" id="prog" style="width:50%"></div></div>
+          <div class="pb-lbl"><span id="pl1">Team A</span><span>Points Share</span><span id="pl2">Team B</span></div>
         </div>
-        <div class="stat-row"><span class="sv1" id="s-p1sets">0</span><span class="sl">Sets Won</span><span class="sv2" id="s-p2sets">0</span></div>
-        <div class="stat-row"><span class="sv1" id="s-p1cur">0</span><span class="sl">Current Set Pts</span><span class="sv2" id="s-p2cur">0</span></div>
-        <div class="stat-row"><span class="sv1" id="s-p1tot">0</span><span class="sl">Total Points</span><span class="sv2" id="s-p2tot">0</span></div>
-        <div class="stat-row"><span class="sv1" id="s-p1flt">0</span><span class="sl">Service Faults</span><span class="sv2" id="s-p2flt">0</span></div>
-        <div class="stat-row"><span class="sv1" id="s-p1str">0</span><span class="sl">Best Streak</span><span class="sv2" id="s-p2str">0</span></div>
-        <div class="stat-row"><span class="sv1" style="font-size:15px" id="s-tmr">00:00</span><span class="sl">Match Time</span><span class="sv2">–</span></div>
+        <div class="str"><span class="str-lbl">Current Score</span><span class="str-val c1" id="st-p1sc">0</span><span style="color:var(--muted);font-size:12px;margin:0 4px">–</span><span class="str-val c2" id="st-p2sc">0</span></div>
+        <div class="str"><span class="str-lbl">Points Won</span><span class="str-val c1" id="st-p1pt">0</span><span style="color:var(--muted);font-size:12px;margin:0 4px">vs</span><span class="str-val c2" id="st-p2pt">0</span></div>
+        <div class="str"><span class="str-lbl">Service Faults</span><span class="str-val c1" id="st-p1ft">0</span><span style="color:var(--muted);font-size:12px;margin:0 4px">vs</span><span class="str-val c2" id="st-p2ft">0</span></div>
+        <div class="str"><span class="str-lbl">Best Streak</span><span class="str-val c1" id="st-p1st">0</span><span style="color:var(--muted);font-size:12px;margin:0 4px">vs</span><span class="str-val c2" id="st-p2st">0</span></div>
+        <div class="str"><span class="str-lbl">Times Serving</span><span class="str-val c1" id="st-p1sv">0</span><span style="color:var(--muted);font-size:12px;margin:0 4px">vs</span><span class="str-val c2" id="st-p2sv">0</span></div>
+        <div class="str"><span class="str-lbl">Match Time</span><span class="str-val c1" style="font-size:14px" id="st-tmr">00:00</span><span style="color:var(--muted);font-size:12px;margin:0 4px"></span><span class="str-val c2" style="font-size:12px">–</span></div>
       </div>
-      <div class="spanel" id="sp-sets">
-        <div style="font-size:10px;color:var(--muted);text-align:center;padding:8px 0 13px;letter-spacing:1.5px;text-transform:uppercase;font-weight:700">Set Results</div>
-        <table class="sets-tbl">
-          <thead><tr><th>Set</th><th id="th-p1">P1</th><th id="th-p2">P2</th><th>Winner</th></tr></thead>
-          <tbody id="sets-body"></tbody>
-        </table>
-        <div id="sets-empty" style="text-align:center;color:var(--muted);padding:28px 0;font-size:13px">No completed sets yet</div>
+
+      <!-- Individual Player Stats -->
+      <div class="spanel" id="sp-players">
+        <div id="player-cards"></div>
       </div>
     </div>
   </div>
@@ -488,281 +449,302 @@ input+input{margin-top:8px}
 
 <!-- Match Over -->
 <div id="mo">
-  <div class="mo-card">
-    <span class="mo-trophy">🏆</span>
-    <div class="mo-label">Match Winner</div>
-    <div class="mo-winner" id="mo-w">Player 1</div>
-    <div class="mo-sub"    id="mo-sub">wins the match!</div>
-    <div class="mo-sets"   id="mo-sets"></div>
+  <div class="moc">
+    <span class="mo-tr">🏆</span>
+    <div class="mo-lbl">Match Winner</div>
+    <div class="mo-win" id="mo-w">Team A</div>
+    <div class="mo-sub" id="mo-sub">wins the game!</div>
+    <div class="mo-sc"  id="mo-sc">0 – 0</div>
+    <div class="mo-stats" id="mo-stats"></div>
     <div class="mo-btns">
-      <button class="mo-btn mo-p" onclick="resetMatch()">🔄 New Match</button>
-      <button class="mo-btn mo-s" onclick="document.getElementById('mo').classList.remove('show')">View Board</button>
+      <button class="mob p" onclick="resetMatch()">🔄 New Match</button>
+      <button class="mob s" onclick="document.getElementById('mo').classList.remove('show')">View Board</button>
     </div>
   </div>
 </div>
 <div id="toast"></div>
 
 <script>
-// ══════════════════════════════════════════════════════════════════════
-//  TRADITIONAL BADMINTON SCORING — HAND-IN / HAND-OUT
+// ══════════════════════════════════════════════════════════════════
+//  EXACT RULES IMPLEMENTED:
 //
-//  SINGLES:
-//    - Server wins rally  →  +1 point to server, server keeps serve
-//    - Server loses rally →  NO point, service transfers to opponent
+//  MATCH START:
+//    Team A serves first with ONE hand only.
+//    → Team A person 1 serves.
+//    → If Team A loses rally (fault/out) → service goes directly to Team B.
+//      (Team A person 2 does NOT get a chance at game start)
 //
-//  DOUBLES:
-//    - Match start: serving team gets ONE hand only (1 fault = lose serve)
-//    - Normal play: each team has TWO hands (2 faults before losing serve)
-//    - Fault 1:  partner serves next (server index switches within team)
-//    - Fault 2:  service goes to opponent team, t1/t2HandsLeft resets to 2
-//    - When opponent team gets serve: first server = player diagonal
-//      to last server on court (right→right, left→left crossing net)
-//    - Server wins →  +1 point, server switches service court side,
-//      handsLeft resets to full 2 (fresh rally)
-// ══════════════════════════════════════════════════════════════════════
+//  NORMAL PLAY (after first service):
+//    SINGLES:
+//      Server wins → +1 pt, keep serving
+//      Server faults → no pt, service to opponent
+//
+//    DOUBLES:
+//      Team A (after receiving serve back) gets 2 hands:
+//        A1 faults → A2 serves
+//        A2 faults → service to Team B
+//      Team B always gets 2 hands:
+//        B1 faults → B2 serves
+//        B2 faults → service to Team A (now with 2 hands)
+//
+//  SCORING:
+//    Win at <winPts>
+//    Deuce at <deucePts>-<deucePts> → next team to lead by 2 wins
+//    Maximum score capped at <maxPts> — at maxPts-maxPts whoever scores next wins
+//
+//  PER-PLAYER STATS tracked individually for all 4 players.
+// ══════════════════════════════════════════════════════════════════
 
-const FMTS = {
-  std: {pts:21, maxPts:30, setsToWin:2, totalSets:3, deuce:true},
-  sh:  {pts:15, maxPts:21, setsToWin:2, totalSets:3, deuce:true},
-  one: {pts:21, maxPts:30, setsToWin:1, totalSets:1, deuce:false},
-  cus: {pts:21, maxPts:30, setsToWin:2, totalSets:3, deuce:true},
-};
-
-let _mode = 'singles', _fmt = 'std', _fs = 1;
+let _mode = 'singles';
 let cfg = {}, G = {}, undoStack = [], timerInt = null;
 
-/* ── Setup helpers ─────────────────────────────────────────── */
-function setMode(m) {
-  _mode = m;
-  ['singles','doubles'].forEach(x => $('m-'+x).classList.toggle('on', x === m));
-  ['p1p','p2p'].forEach(id => $(id).style.display = m === 'doubles' ? 'block' : 'none');
-  ['rd1','rd2','rd3'].forEach(id => $(id).style.display = m === 'doubles' ? 'flex' : 'none');
-}
-function setFS(p) {
-  _fs = p;
-  [1,2].forEach(x => $('s'+x).classList.toggle('on', x === p));
-}
-function setFmt(f) {
-  _fmt = f;
-  document.querySelectorAll('.fmt-btn').forEach((b,i) =>
-    b.classList.toggle('on', ['std','sh','one','cus'][i] === f));
-  const cf = $('cus-fields');
-  if (f === 'cus') {
-    cf.classList.add('show');
-    recheckCustom();
-  } else {
-    cf.classList.remove('show');
-  }
-}
-function recheckCustom() {
-  const p  = parseInt($('c-pts').value)  || 21;
-  const mx = parseInt($('c-max').value)  || 30;
-  const s  = parseInt($('c-sets').value) || 2;
-  FMTS.cus = {pts:p, maxPts:mx, setsToWin:s, totalSets:s*2-1, deuce:true};
-  $('cus-desc').textContent = `${p} pts · Best of ${s*2-1}`;
-}
-['c-pts','c-max','c-sets'].forEach(id => {
-  const el = document.getElementById(id);
-  if (el) el.addEventListener('input', recheckCustom);
-});
+// ── Setup Helpers ─────────────────────────────────────────────
+function $(id){ return document.getElementById(id); }
 
-/* ── Start ─────────────────────────────────────────────────── */
-function startMatch() {
-  if (_fmt === 'cus') recheckCustom();
-  const rules = FMTS[_fmt];
+function setMode(m){
+  _mode = m;
+  $('m-s').classList.toggle('on', m==='singles');
+  $('m-d').classList.toggle('on', m==='doubles');
+  [$('p1p'),$('p2p')].forEach(el => el.style.display = m==='doubles' ? 'block' : 'none');
+  document.querySelectorAll('.id').forEach(el => el.style.display = m==='doubles' ? 'flex' : 'none');
+}
+
+// ── Start Match ────────────────────────────────────────────────
+function startMatch(){
+  const winPts   = parseInt($('win-pts').value)   || 15;
+  const deucePts = parseInt($('deuce-pts').value)  || 14;
+  const maxPts   = parseInt($('max-pts').value)    || 16;
   cfg = {
-    p1Name:    $('p1n').value.trim() || 'Player 1',
-    p2Name:    $('p2n').value.trim() || 'Player 2',
-    p1Partner: $('p1p').value.trim() || 'Player 3',
-    p2Partner: $('p2p').value.trim() || 'Player 4',
-    mode: _mode, rules, firstServe: _fs,
+    p1Name:    $('p1n').value.trim() || 'Player A1',
+    p2Name:    $('p2n').value.trim() || 'Player B1',
+    p1Partner: $('p1p').value.trim() || 'Player A2',
+    p2Partner: $('p2p').value.trim() || 'Player B2',
+    mode: _mode,
+    winPts, deucePts, maxPts,
   };
   initGame();
   $('setup').style.display = 'none';
   $('game').classList.add('on');
 }
 
-/* ── Init ───────────────────────────────────────────────────── */
-function initGame() {
+// ── Init Game ──────────────────────────────────────────────────
+function initGame(){
   clearInterval(timerInt);
   undoStack = [];
   const isD = cfg.mode === 'doubles';
-  G = {
-    p1Score:0, p2Score:0, p1Sets:0, p2Sets:0,
-    currentSet:1,
-    timer:0, timerRunning:true,
-    matchOver:false, winner:null,
-    rallies:[], setHistory:[],
-    p1TotalPts:0, p2TotalPts:0,
-    p1Faults:0, p2Faults:0,
-    p1BestStreak:0, p2BestStreak:0,
-    streak:0, streakOwner:0,
 
-    // Service
-    servingTeam: cfg.firstServe,
-    // Which player in each team is currently serving: 0 = first player, 1 = partner
+  // Per-player stats objects
+  const mkPS = () => ({ points:0, faults:0, streak:0, bestStreak:0, timesServed:0, curStreak:0 });
+
+  G = {
+    p1Score:0, p2Score:0,
+    timer:0, timerRunning:true,
+    matchOver:false, winner:null, winnerTeam:0,
+    rallies:[],
+
+    // === SERVICE STATE ===
+    servingTeam: 1,   // 1=TeamA, 2=TeamB
+    // Player index within team currently serving (0 or 1)
     t1Idx: 0,
     t2Idx: 0,
-    // How many faults are still allowed before losing serve
-    // At match start serving team gets 1, others get 2
-    t1Hands: isD ? (cfg.firstServe === 1 ? 1 : 2) : 1,
-    t2Hands: isD ? (cfg.firstServe === 2 ? 1 : 2) : 1,
+    // Hands remaining for currently serving team
+    // Team A starts with 1 hand (match start rule)
+    t1Hands: isD ? 1 : 1,   // Team A: 1 hand at start
+    t2Hands: isD ? 2 : 1,   // Team B: 2 hands when they first get serve
+    // Track whether the very first service rotation has completed
+    // (after Team A loses first serve, all subsequent rotations give 2 hands to Team A too)
+    firstRotationDone: false,
+
+    // === PER-PLAYER STATS ===
+    // p1Stats = Team A player 1, p1pStats = Team A player 2 (partner)
+    p1Stats:  mkPS(),
+    p1pStats: mkPS(),
+    p2Stats:  mkPS(),
+    p2pStats: mkPS(),
+
+    // Team-level streak tracking
+    t1Streak:0, t1BestStreak:0,
+    t2Streak:0, t2BestStreak:0,
+    streakOwner:0,
+
+    // Service counts per team
+    t1SvcCount:1, t2SvcCount:0,  // Team A starts serving
   };
+
+  // Mark Team A player 0 as currently serving (increment timesServed)
+  G.p1Stats.timesServed = 1;
+
   startTimer();
   renderAll();
 }
 
-/* ── Timer ──────────────────────────────────────────────────── */
-function startTimer() {
+// ── Timer ──────────────────────────────────────────────────────
+function startTimer(){
   clearInterval(timerInt);
-  timerInt = setInterval(() => {
-    if (G.timerRunning && !G.matchOver) { G.timer++; renderTimer(); }
-  }, 1000);
+  timerInt = setInterval(()=>{ if(G.timerRunning&&!G.matchOver){G.timer++;renderTimer();} }, 1000);
 }
-function toggleTimer() {
+function toggleTimer(){
   G.timerRunning = !G.timerRunning;
   $('tmr-btn').classList.toggle('paused', !G.timerRunning);
   toast(G.timerRunning ? '▶ Timer resumed' : '⏸ Timer paused');
 }
-function fmtT(s) {
-  return String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0');
-}
-function renderTimer() {
-  const t = fmtT(G.timer);
-  $('tmr-btn').textContent = t;
-  $('s-tmr').textContent = t;
+function fmtT(s){ return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
+function renderTimer(){ const t=fmtT(G.timer); $('tmr-btn').textContent=t; $('st-tmr').textContent=t; }
+
+// ── Current server name ────────────────────────────────────────
+function serverName(){
+  if(cfg.mode==='singles') return G.servingTeam===1 ? cfg.p1Name : cfg.p2Name;
+  if(G.servingTeam===1) return G.t1Idx===0 ? cfg.p1Name : cfg.p1Partner;
+  return G.t2Idx===0 ? cfg.p2Name : cfg.p2Partner;
 }
 
-/* ── Current server name ────────────────────────────────────── */
-function serverName() {
-  if (cfg.mode === 'singles') return G.servingTeam === 1 ? cfg.p1Name : cfg.p2Name;
-  if (G.servingTeam === 1) return G.t1Idx === 0 ? cfg.p1Name : cfg.p1Partner;
-  return G.t2Idx === 0 ? cfg.p2Name : cfg.p2Partner;
+// ── Get stat object for current server ────────────────────────
+function curServerStat(){
+  if(cfg.mode==='singles') return G.servingTeam===1 ? G.p1Stats : G.p2Stats;
+  if(G.servingTeam===1) return G.t1Idx===0 ? G.p1Stats : G.p1pStats;
+  return G.t2Idx===0 ? G.p2Stats : G.p2pStats;
 }
 
-/* ── Service court: right when serving team score is even ───── */
-function serviceCourtSide() {
-  const score = G.servingTeam === 1 ? G.p1Score : G.p2Score;
-  return score % 2 === 0 ? 'right' : 'left';
+// ── Service court side ─────────────────────────────────────────
+function svcSide(){
+  const score = G.servingTeam===1 ? G.p1Score : G.p2Score;
+  return score%2===0 ? 'right' : 'left';
 }
 
-/* ── Rally Won by a team ────────────────────────────────────── */
-function rallyWin(team) {
-  if (G.matchOver) return;
-  if (team !== G.servingTeam) {
-    toast('Only the serving team can score a point!'); return;
-  }
+// ── Rally Won ──────────────────────────────────────────────────
+function rallyWin(team){
+  if(G.matchOver) return;
+  if(team !== G.servingTeam){ toast('Only the SERVING team can win a rally point!'); return; }
   undoStack.push(snap());
 
+  const sstat = curServerStat();
+
   // Award point
-  if (team === 1) { G.p1Score++; G.p1TotalPts++; }
-  else            { G.p2Score++; G.p2TotalPts++; }
+  if(team===1){ G.p1Score++; }
+  else        { G.p2Score++; }
 
-  // Streak
-  if (G.streakOwner === team) G.streak++;
-  else { G.streak = 1; G.streakOwner = team; }
-  if (team === 1) G.p1BestStreak = Math.max(G.p1BestStreak, G.streak);
-  else            G.p2BestStreak = Math.max(G.p2BestStreak, G.streak);
+  // Per-player stats
+  sstat.points++;
+  sstat.curStreak++;
+  sstat.bestStreak = Math.max(sstat.bestStreak, sstat.curStreak);
 
-  // Reset hands for serving team (they won, fresh start)
-  if (team === 1) G.t1Hands = cfg.mode === 'doubles' ? 2 : 1;
-  else            G.t2Hands = cfg.mode === 'doubles' ? 2 : 1;
+  // Team streak
+  if(G.streakOwner===team){
+    if(team===1){ G.t1Streak++; G.t1BestStreak=Math.max(G.t1BestStreak,G.t1Streak); }
+    else        { G.t2Streak++; G.t2BestStreak=Math.max(G.t2BestStreak,G.t2Streak); }
+  } else {
+    G.streakOwner=team;
+    if(team===1){ G.t1Streak=1; }
+    else        { G.t2Streak=1; }
+  }
+
+  // After winning a rally, hands reset (they keep serving, fresh state)
+  if(cfg.mode==='doubles'){
+    if(team===1) G.t1Hands=2;
+    else         G.t2Hands=2;
+    // First rotation is now done since they scored
+    G.firstRotationDone=true;
+  }
 
   G.rallies.push({type:'win', team, server:serverName(), p1:G.p1Score, p2:G.p2Score});
   popAnim(team);
-  checkSetEnd();
+  checkEnd();
   renderAll();
 }
 
-/* ── Rally Fault by serving team ───────────────────────────── */
-/*
-   SERVICE TRANSFER RULES (Doubles):
-   ─────────────────────────────────
-   Each team has a "hands" counter (how many players can still serve this turn).
-
-   FAULT by current server:
-     hands > 1  →  partner serves next (switch idx within same team), hands--
-     hands = 1  →  service transfers to OPPONENT team
-                   • opponent team gets 2 hands (both players serve)
-                   • first server on opponent = player DIAGONALLY OPPOSITE
-                     to the last server: we determine diagonal by the service
-                     court side that was just being served FROM:
-                       right court server  →  opponent's right court player (idx 0)
-                       left  court server  →  opponent's left  court player (idx 1)
-
-   AFTER OPPONENT TEAM ALSO LOSES BOTH HANDS:
-     Service returns to the ORIGINAL team (the one that served first this
-     rotation), NOT necessarily Team 1. We track `lastReceiverTeam` so
-     service always goes back correctly:
-       Team 1 faults out → Team 2 gets serve
-       Team 2 also faults out → Team 1 gets serve back  ← THIS was broken
-*/
-function rallyFault(team) {
-  if (G.matchOver) return;
-  if (team !== G.servingTeam) {
-    toast('Only the serving team can commit a service fault!'); return;
-  }
+// ── Rally Fault ────────────────────────────────────────────────
+function rallyFault(team){
+  if(G.matchOver) return;
+  if(team !== G.servingTeam){ toast('Only the SERVING team can commit a fault!'); return; }
   undoStack.push(snap());
 
-  if (team === 1) G.p1Faults++;
-  else            G.p2Faults++;
+  const sideBefore = svcSide(); // capture BEFORE any state change
+  const sstat = curServerStat();
 
-  // Capture the service court side BEFORE any state change
-  // (serviceCourtSide reads serving team's current score)
-  const sideBeforeFault = serviceCourtSide();
+  // Per-player stats
+  sstat.faults++;
+  sstat.curStreak = 0; // reset streak on fault
+
+  if(team===1){ G.t1Streak=0; }
+  else        { G.t2Streak=0; }
+  G.streakOwner = 0;
 
   G.rallies.push({type:'fault', team, server:serverName(), p1:G.p1Score, p2:G.p2Score});
-  G.streak = 0; G.streakOwner = 0;
 
-  const isD = cfg.mode === 'doubles';
+  const isD = cfg.mode==='doubles';
 
-  if (!isD) {
-    // ── SINGLES: any fault → service transfers immediately ──
-    G.servingTeam = team === 1 ? 2 : 1;
+  if(!isD){
+    // ── SINGLES: fault → direct transfer ──
+    G.servingTeam = team===1 ? 2 : 1;
+    G.firstRotationDone = true;
+    // Track service counts
+    if(G.servingTeam===1) G.t1SvcCount++;
+    else                   G.t2SvcCount++;
+    // For singles stats, timesServed
+    if(G.servingTeam===1) G.p1Stats.timesServed++;
+    else                   G.p2Stats.timesServed++;
 
   } else {
-    // ── DOUBLES ─────────────────────────────────────────────
-    if (team === 1) {
+    // ── DOUBLES ────────────────────────────────────────────────────
+    if(team===1){
       G.t1Hands--;
 
-      if (G.t1Hands > 0) {
-        // Still have a hand left → partner serves next
-        G.t1Idx = G.t1Idx === 0 ? 1 : 0;
-        toast(`Fault! ${cfg.p1Partner || 'Partner'} serves next`);
+      if(G.t1Hands > 0){
+        // Partner serves next within Team A
+        G.t1Idx = G.t1Idx===0 ? 1 : 0;
+        const partnerName = G.t1Idx===0 ? cfg.p1Name : cfg.p1Partner;
+        // Update timesServed for the new server
+        if(G.t1Idx===0) G.p1Stats.timesServed++;
+        else            G.p1pStats.timesServed++;
+        G.t1SvcCount++;
+        toast(`Fault! ${partnerName} serves next`);
 
       } else {
-        // Team 1 used both hands → service goes to Team 2
+        // Team A used all hands → service to Team B
         G.servingTeam = 2;
-        G.t2Hands = 2; // Team 2 gets fresh 2 hands
+        G.t2Hands = 2; // Team B gets 2 hands
+        G.firstRotationDone = true;
 
-        // Diagonal rule: new server is diagonally opposite to the
-        // last T1 server. The court side (right/left) was captured above.
-        // right court → diagonal is opponent's right court player → idx 0
-        // left  court → diagonal is opponent's left  court player → idx 1
-        G.t2Idx = sideBeforeFault === 'right' ? 0 : 1;
+        // Diagonal rule: server on Team B = player diagonally opposite
+        // right court server → opponent's right court player (idx 0)
+        // left  court server → opponent's left  court player (idx 1)
+        G.t2Idx = sideBefore==='right' ? 0 : 1;
+        const newServer = G.t2Idx===0 ? cfg.p2Name : cfg.p2Partner;
 
-        toast(`Service to ${cfg.p2Name}'s team — ${sideBeforeFault === 'right' ? cfg.p2Name : cfg.p2Partner} serves`);
+        // Track timesServed for Team B new server
+        if(G.t2Idx===0) G.p2Stats.timesServed++;
+        else             G.p2pStats.timesServed++;
+        G.t2SvcCount++;
+        toast(`Service → Team B · ${newServer} serves (diagonal)`);
       }
 
     } else {
       // team === 2 faults
       G.t2Hands--;
 
-      if (G.t2Hands > 0) {
-        // Partner serves next within Team 2
-        G.t2Idx = G.t2Idx === 0 ? 1 : 0;
-        toast(`Fault! ${cfg.p2Partner || 'Partner'} serves next`);
+      if(G.t2Hands > 0){
+        // Partner serves next within Team B
+        G.t2Idx = G.t2Idx===0 ? 1 : 0;
+        const partnerName = G.t2Idx===0 ? cfg.p2Name : cfg.p2Partner;
+        if(G.t2Idx===0) G.p2Stats.timesServed++;
+        else             G.p2pStats.timesServed++;
+        G.t2SvcCount++;
+        toast(`Fault! ${partnerName} serves next`);
 
       } else {
-        // Team 2 also used both hands → service returns to Team 1
-        // This is the "front team gets it back" rule
+        // Team B used both hands → service back to Team A
+        // Now Team A gets 2 hands (first rotation is done)
         G.servingTeam = 1;
-        G.t1Hands = 2; // Team 1 gets fresh 2 hands
+        G.t1Hands = 2; // Team A now gets full 2 hands
 
-        // Diagonal of last T2 server
-        G.t1Idx = sideBeforeFault === 'right' ? 0 : 1;
+        // Diagonal of last Team B server
+        G.t1Idx = sideBefore==='right' ? 0 : 1;
+        const newServer = G.t1Idx===0 ? cfg.p1Name : cfg.p1Partner;
 
-        toast(`Service back to ${cfg.p1Name}'s team — ${sideBeforeFault === 'right' ? cfg.p1Name : cfg.p1Partner} serves`);
+        if(G.t1Idx===0) G.p1Stats.timesServed++;
+        else             G.p1pStats.timesServed++;
+        G.t1SvcCount++;
+        toast(`Service → Team A · ${newServer} serves`);
       }
     }
   }
@@ -770,315 +752,318 @@ function rallyFault(team) {
   renderAll();
 }
 
-/* ── Check set end ──────────────────────────────────────────── */
-function checkSetEnd() {
-  const r = cfg.rules;
-  const s1 = G.p1Score, s2 = G.p2Score;
-  let setWinner = 0;
-  if (s1 >= r.maxPts) setWinner = 1;
-  else if (s2 >= r.maxPts) setWinner = 2;
-  else if (r.deuce) {
-    if (s1 >= r.pts && s1 - s2 >= 2) setWinner = 1;
-    if (s2 >= r.pts && s2 - s1 >= 2) setWinner = 2;
-  } else {
-    if (s1 >= r.pts) setWinner = 1;
-    if (s2 >= r.pts) setWinner = 2;
+// ── Check Game End ─────────────────────────────────────────────
+function checkEnd(){
+  const {winPts, deucePts, maxPts} = cfg;
+  const s1=G.p1Score, s2=G.p2Score;
+  let winner=0;
+
+  // Max points reached — next point wins (no matter what)
+  if(s1>=maxPts && s2>=maxPts){
+    // Already at max-max, whoever scored last wins
+    if(s1>s2) winner=1;
+    else if(s2>s1) winner=2;
   }
-  if (!setWinner) return;
-
-  const np1s = G.p1Sets + (setWinner === 1 ? 1 : 0);
-  const np2s = G.p2Sets + (setWinner === 2 ? 1 : 0);
-  G.setHistory.push({set:G.currentSet, p1:s1, p2:s2, winner:setWinner});
-
-  if (np1s >= r.setsToWin || np2s >= r.setsToWin) {
-    G.p1Sets = np1s; G.p2Sets = np2s;
-    G.matchOver = true; G.timerRunning = false;
-    G.winner = setWinner === 1 ? cfg.p1Name : cfg.p2Name;
-    G.winnerTeam = setWinner;
-    setTimeout(showMatchOver, 700);
-    launchConfetti();
-  } else {
-    G.p1Sets = np1s; G.p2Sets = np2s;
-    G.currentSet++;
-    G.p1Score = 0; G.p2Score = 0;
-    G.rallies = [];
-    G.streak = 0; G.streakOwner = 0;
-    // Set winner serves first in next set, gets 1 hand only
-    G.servingTeam = setWinner;
-    G.t1Idx = 0; G.t2Idx = 0;
-    G.t1Hands = cfg.mode === 'doubles' ? (setWinner === 1 ? 1 : 2) : 1;
-    G.t2Hands = cfg.mode === 'doubles' ? (setWinner === 2 ? 1 : 2) : 1;
-    toast(`Set ${G.currentSet - 1} complete! Starting Set ${G.currentSet}`);
+  // Deuce condition
+  else if(s1>=deucePts && s2>=deucePts){
+    // Need 2-point lead, capped at maxPts
+    if(s1-s2>=2) winner=1;
+    else if(s2-s1>=2) winner=2;
   }
+  // Normal win
+  else {
+    if(s1>=winPts) winner=1;
+    if(s2>=winPts) winner=2;
+  }
+
+  if(!winner) return;
+  G.matchOver=true; G.timerRunning=false;
+  G.winner = winner===1 ? cfg.p1Name+'\'s Team' : cfg.p2Name+'\'s Team';
+  G.winnerTeam=winner;
+  setTimeout(showMatchOver, 600);
+  launchConfetti();
 }
 
-/* ── Undo ───────────────────────────────────────────────────── */
-function snap() { return JSON.parse(JSON.stringify(G)); }
-function undoLast() {
-  if (!undoStack.length) { toast('Nothing to undo'); return; }
-  G = undoStack.pop();
-  renderAll();
-  toast('↩ Last action undone');
+// ── Undo ───────────────────────────────────────────────────────
+function snap(){ return JSON.parse(JSON.stringify(G)); }
+function undoLast(){
+  if(!undoStack.length){ toast('Nothing to undo'); return; }
+  G=undoStack.pop(); renderAll(); toast('↩ Last action undone');
 }
 
-/* ── Reset / Setup ──────────────────────────────────────────── */
-function resetMatch() {
-  document.getElementById('mo').classList.remove('show');
-  initGame();
-  toast('Match reset');
-}
-function goSetup() {
-  clearInterval(timerInt);
-  $('game').classList.remove('on');
-  $('setup').style.display = 'flex';
-  document.getElementById('mo').classList.remove('show');
-}
+// ── Reset / Setup ──────────────────────────────────────────────
+function resetMatch(){ $('mo').classList.remove('show'); initGame(); toast('Match reset'); }
+function goSetup(){ clearInterval(timerInt); $('game').classList.remove('on'); $('setup').style.display='flex'; $('mo').classList.remove('show'); }
 
-/* ══ RENDER ═════════════════════════════════════════════════════ */
-function renderAll() {
-  const {p1Name, p2Name, p1Partner, p2Partner, mode, rules} = cfg;
-  const g = G;
-  const isD = mode === 'doubles';
-  const srv = g.servingTeam;
+// ══ RENDER ════════════════════════════════════════════════════
+function renderAll(){
+  const {p1Name,p2Name,p1Partner,p2Partner,mode,winPts,deucePts,maxPts}=cfg;
+  const g=G, isD=mode==='doubles', srv=g.servingTeam;
 
   // Names
-  $('d-p1n').textContent = p1Name;
-  $('d-p2n').textContent = p2Name;
-  $('d-p1s').textContent = isD ? '/ ' + p1Partner : '';
-  $('d-p2s').textContent = isD ? '/ ' + p2Partner : '';
+  $('d-p1n').textContent = isD ? `${p1Name} / ${p1Partner}` : p1Name;
+  $('d-p2n').textContent = isD ? `${p2Name} / ${p2Partner}` : p2Name;
+  $('d-p1s').textContent = isD ? 'Team A' : '';
+  $('d-p2s').textContent = isD ? 'Team B' : '';
 
   // Scores
   $('sc1').textContent = String(g.p1Score).padStart(2,'0');
   $('sc2').textContent = String(g.p2Score).padStart(2,'0');
 
-  // Serving panel highlight
-  $('pp1').classList.toggle('serving', srv === 1);
-  $('pp2').classList.toggle('serving', srv === 2);
+  // Serving panel
+  $('pp1').classList.toggle('serving', srv===1);
+  $('pp2').classList.toggle('serving', srv===2);
 
-  // Buttons: only serving team can click
-  $('b1w').disabled = srv !== 1 || g.matchOver;
-  $('b1f').disabled = srv !== 1 || g.matchOver;
-  $('b2w').disabled = srv !== 2 || g.matchOver;
-  $('b2f').disabled = srv !== 2 || g.matchOver;
+  // Buttons: only serving team enabled
+  $('b1w').disabled = srv!==1 || g.matchOver;
+  $('b1f').disabled = srv!==1 || g.matchOver;
+  $('b2w').disabled = srv!==2 || g.matchOver;
+  $('b2f').disabled = srv!==2 || g.matchOver;
 
   // Serve banner
   const sn   = serverName();
-  const side = serviceCourtSide();
-  $('srv-who').textContent = `${sn} is serving from ${side} court`;
-  $('srv-shuttle').style.color = srv === 1 ? 'var(--p1)' : 'var(--p2)';
-  const isD2 = isD;
-  let handsLeft = srv === 1 ? g.t1Hands : g.t2Hands;
-  let note = 'Win the rally → +1 point, keep serving. Lose it → no point, service transfers.';
-  if (isD) {
-    const partnerName = srv === 1 ? (cfg.p1Partner || 'Partner') : (cfg.p2Partner || 'Partner');
-    const oppTeamName = srv === 1 ? cfg.p2Name : cfg.p1Name;
-    if (handsLeft > 1) {
-      note = `Win → +1 point, keep serving. Fault → ${partnerName} serves next (then ${oppTeamName}'s team if fault again).`;
+  const side = svcSide();
+  const handsLeft = srv===1 ? g.t1Hands : g.t2Hands;
+  $('svb-w').textContent = `${sn} is serving — ${side} service court`;
+  $('svb-ic').style.color = srv===1 ? 'var(--p1)' : 'var(--p2)';
+
+  let note = 'Win rally → +1 point, keep serving. Lose rally → no point, service transfers.';
+  if(isD){
+    const isFirst = !g.firstRotationDone && srv===1;
+    if(isFirst){
+      note = `⚠ Game start: Team A has 1 hand only! Fault now → direct to Team B.`;
     } else {
-      note = `Win → +1 point, keep serving. Fault → service goes to ${oppTeamName}'s team immediately (last hand).`;
+      const partnerName = srv===1 ? p1Partner : p2Partner;
+      note = handsLeft>1
+        ? `Win → +1 pt, keep serving. Fault → ${partnerName} serves next (1 hand left).`
+        : `Last hand! Win → +1 pt. Fault → service goes to opponents.`;
     }
   }
-  $('srv-note').textContent = note;
+  $('svb-n').textContent = note;
 
-  // Set gems
-  buildGems('sb1', g.p1Sets, rules.setsToWin);
-  buildGems('sb2', g.p2Sets, rules.setsToWin);
-
-  // Service order dots (doubles only)
-  if (isD) {
-    buildSvcDots('svo1', 1);
-    buildSvcDots('svo2', 2);
-  } else {
-    $('svo1').innerHTML = '';
-    $('svo2').innerHTML = '';
+  // Hand dots
+  const hr = $('hands-row'); hr.innerHTML='';
+  if(isD){
+    const total=2, filled=handsLeft;
+    for(let i=0;i<total;i++){
+      const d=document.createElement('div');
+      d.className='hand-dot'+(i<filled?' active':'');
+      hr.appendChild(d);
+    }
+    const lbl=document.createElement('span');
+    lbl.style.cssText='font-size:10px;color:var(--muted);margin-left:6px';
+    lbl.textContent=`${handsLeft} hand${handsLeft===1?'':'s'} remaining`;
+    hr.appendChild(lbl);
   }
 
-  // Deuce
-  const dc = rules.deuce && g.p1Score >= rules.pts - 1 && g.p2Score >= rules.pts - 1 && g.p1Score < rules.maxPts && g.p2Score < rules.maxPts;
-  $('dtag').classList.toggle('show', dc);
+  // Score info bar
+  $('si-win').textContent   = winPts;
+  $('si-deuce').textContent = `${deucePts}-${deucePts}`;
+  $('si-max').textContent   = maxPts;
+  $('sc-pill').textContent  = `Win ${winPts} · Deuce ${deucePts} · Max ${maxPts}`;
 
-  // Pills / labels
-  $('gm-pill').textContent  = isD ? 'Doubles' : 'Singles';
-  $('set-pill').textContent = `Set ${g.currentSet} of ${rules.totalSets}`;
-  $('set-lbl').textContent  = `SET ${g.currentSet}`;
-  $('th-p1').textContent = p1Name; $('th-p2').textContent = p2Name;
-  $('pl1').textContent = p1Name;   $('pl2').textContent = p2Name;
+  // Service order dots (doubles)
+  buildSvoDots('svo1', 1); buildSvoDots('svo2', 2);
 
-  // Set history chips
-  const sc = $('set-chips');
-  // remove old chips (keep the label span)
-  Array.from(sc.querySelectorAll('.set-chip')).forEach(e => e.remove());
-  if (g.setHistory.length) {
-    sc.style.display = 'flex';
-    g.setHistory.forEach(sh => {
-      const c = document.createElement('span');
-      c.className = 'set-chip';
-      c.innerHTML = `S${sh.set}: <span class="${sh.winner===1?'w1':'w2'}">${sh.p1}–${sh.p2}</span>`;
-      sc.appendChild(c);
-    });
-  } else sc.style.display = 'none';
+  // Deuce check
+  const inDeuce = g.p1Score>=deucePts && g.p2Score>=deucePts && g.p1Score<maxPts && g.p2Score<maxPts;
+  $('dtag').classList.toggle('show', inDeuce);
+
+  $('gm-pill').textContent = isD ? 'Doubles' : 'Singles';
+  $('pl1').textContent = p1Name; $('pl2').textContent = p2Name;
 
   renderCourt();
   renderTimer();
   renderLog();
-  renderStats();
-  renderSetsTable();
+  renderTeamStats();
+  renderPlayerStats();
 }
 
-function buildGems(id, filled, total) {
-  const el = $(id); el.innerHTML = '';
-  for (let i = 0; i < total; i++) {
-    const d = document.createElement('div');
-    d.className = 'set-gem' + (i < filled ? ' won' : '');
-    el.appendChild(d);
-  }
-}
+function buildSvoDots(id, team){
+  const el=$(id); el.innerHTML='';
+  if(cfg.mode!=='doubles') return;
+  const isSrv = G.servingTeam===team;
+  const idx    = team===1 ? G.t1Idx  : G.t2Idx;
+  const hands  = team===1 ? G.t1Hands: G.t2Hands;
+  const names  = team===1 ? [cfg.p1Name,cfg.p1Partner] : [cfg.p2Name,cfg.p2Partner];
+  const col    = team===1 ? 'var(--p1)' : 'var(--p2)';
 
-function buildSvcDots(id, team) {
-  const el = $(id); el.innerHTML = '';
-  const isServing = G.servingTeam === team;
-  const idx  = team === 1 ? G.t1Idx  : G.t2Idx;
-  const hands = team === 1 ? G.t1Hands : G.t2Hands;
-  const names = team === 1
-    ? [cfg.p1Name, cfg.p1Partner]
-    : [cfg.p2Name, cfg.p2Partner];
-
-  names.forEach((n, i) => {
-    const d = document.createElement('div');
-    let cls = 'svc-dot';
-    if (isServing) {
-      if (i === idx) cls += ' cur';
-      else if (hands === 1) cls += ' used'; // one hand already used
+  names.forEach((n,i)=>{
+    const d=document.createElement('div');
+    let cls='svd';
+    if(isSrv){
+      if(i===idx) cls+=' cur';
+      else if(hands===1) cls+=' used'; // other player already faulted
     }
-    d.className = cls;
-    d.title = n;
-    d.textContent = (n || '?').charAt(0).toUpperCase();
+    d.className=cls;
+    d.style.setProperty('--pc', col);
+    d.style.borderColor=col;
+    if(isSrv && i===idx){ d.style.background=col; d.style.color='#fff'; d.style.boxShadow=`0 0 9px ${col}`; }
+    d.title=n; d.textContent=(n||'?').charAt(0).toUpperCase();
     el.appendChild(d);
   });
 }
 
-function renderCourt() {
-  const g = G;
-  const cm1 = document.getElementById('cm1');
-  const cm2 = document.getElementById('cm2');
-  const arr = document.getElementById('sv-arr');
-  const head = document.getElementById('sv-head');
-  const side = serviceCourtSide();
-
-  // T1 court: right service box = (75,125), left = (148,75)
-  // T2 court: right service box = (345,125), left = (272,75)
-  let sx, sy, rx, ry; // server pos, receiver pos
-
-  if (g.servingTeam === 1) {
-    if (side === 'right') { sx=75;  sy=125; rx=272; ry=75;  }
-    else                  { sx=148; sy=75;  rx=345; ry=125; }
-    cm1.setAttribute('cx', sx); cm1.setAttribute('cy', sy); cm1.setAttribute('fill','#E8401C'); cm1.style.opacity='0.9';
-    cm2.setAttribute('cx', rx); cm2.setAttribute('cy', ry); cm2.setAttribute('fill','#0EA5C4'); cm2.style.opacity='0.35';
+function renderCourt(){
+  const g=G, cm1=$('cm1'), cm2=$('cm2'), arr=$('sv-arr'), head=$('sv-head');
+  const side=svcSide();
+  let sx,sy,rx,ry;
+  // Team A: right box=(72,125), left box=(148,75)
+  // Team B: right box=(348,125), left box=(272,75)
+  if(g.servingTeam===1){
+    if(side==='right'){sx=72;sy=125;rx=272;ry=75;}
+    else             {sx=148;sy=75;rx=348;ry=125;}
+    cm1.setAttribute('cx',sx); cm1.setAttribute('cy',sy); cm1.setAttribute('fill','#E8401C'); cm1.style.opacity='0.9';
+    cm2.setAttribute('cx',rx); cm2.setAttribute('cy',ry); cm2.setAttribute('fill','#0EA5C4'); cm2.style.opacity='0.3';
   } else {
-    if (side === 'right') { sx=345; sy=125; rx=148; ry=75;  }
-    else                  { sx=272; sy=75;  rx=75;  ry=125; }
-    cm2.setAttribute('cx', sx); cm2.setAttribute('cy', sy); cm2.setAttribute('fill','#0EA5C4'); cm2.style.opacity='0.9';
-    cm1.setAttribute('cx', rx); cm1.setAttribute('cy', ry); cm1.setAttribute('fill','#E8401C'); cm1.style.opacity='0.35';
+    if(side==='right'){sx=348;sy=125;rx=148;ry=75;}
+    else             {sx=272;sy=75;rx=72;ry=125;}
+    cm2.setAttribute('cx',sx); cm2.setAttribute('cy',sy); cm2.setAttribute('fill','#0EA5C4'); cm2.style.opacity='0.9';
+    cm1.setAttribute('cx',rx); cm1.setAttribute('cy',ry); cm1.setAttribute('fill','#E8401C'); cm1.style.opacity='0.3';
   }
-
-  // Arrow from server toward net
-  const netX = 210, netY = (sy + ry) / 2;
-  arr.setAttribute('x1', sx); arr.setAttribute('y1', sy);
-  arr.setAttribute('x2', netX); arr.setAttribute('y2', netY);
-  arr.style.opacity = '0.55';
-  head.setAttribute('points', `${netX},${netY-6} ${netX-5},${netY+5} ${netX+5},${netY+5}`);
-  head.style.opacity = '0.55';
+  const ny=(sy+ry)/2;
+  arr.setAttribute('x1',sx); arr.setAttribute('y1',sy); arr.setAttribute('x2',210); arr.setAttribute('y2',ny); arr.style.opacity='0.5';
+  head.setAttribute('points',`210,${ny-7} 204,${ny+5} 216,${ny+5}`); head.style.opacity='0.5';
 }
 
-function renderLog() {
-  const list = $('r-list'), empty = $('r-empty');
-  list.innerHTML = '';
-  if (!G.rallies.length) { empty.style.display = 'block'; return; }
-  empty.style.display = 'none';
-  G.rallies.forEach((r, i) => {
-    const d = document.createElement('div');
-    const isWin = r.type === 'win';
-    d.className = `r-item ${isWin ? 'pt'+r.team : 'sv'}`;
-    d.innerHTML = `<span class="r-num">#${i+1}</span><span class="r-icon">${isWin?'✅':'❌'}</span><span class="r-txt">${r.server} ${isWin?'wins rally':'faults'}</span><span class="r-sc">${r.p1}–${r.p2}</span>`;
+function renderLog(){
+  const list=$('r-list'), empty=$('r-empty');
+  list.innerHTML='';
+  if(!G.rallies.length){ empty.style.display='block'; return; }
+  empty.style.display='none';
+  G.rallies.forEach((r,i)=>{
+    const d=document.createElement('div');
+    const isWin=r.type==='win';
+    d.className=`ri2 ${isWin?'w'+r.team:'f'}`;
+    d.innerHTML=`<span class="rn">#${i+1}</span><span class="ric">${isWin?'✅':'❌'}</span><span class="rt">${r.server} ${isWin?'scores':'faults'}</span><span class="rsc">${r.p1}–${r.p2}</span>`;
     list.appendChild(d);
   });
-  list.lastChild?.scrollIntoView({behavior:'smooth', block:'nearest'});
+  list.lastChild?.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
-function renderStats() {
-  const g = G;
-  const wins = g.rallies.filter(r => r.type === 'win');
-  const p1w  = wins.filter(r => r.team === 1).length;
-  const p2w  = wins.filter(r => r.team === 2).length;
-  const tot  = p1w + p2w;
-  $('prog').style.width = tot ? (p1w/tot*100).toFixed(1)+'%' : '50%';
-  $('s-p1sets').textContent = g.p1Sets;   $('s-p2sets').textContent = g.p2Sets;
-  $('s-p1cur').textContent  = g.p1Score;  $('s-p2cur').textContent  = g.p2Score;
-  $('s-p1tot').textContent  = g.p1TotalPts; $('s-p2tot').textContent = g.p2TotalPts;
-  $('s-p1flt').textContent  = g.p1Faults; $('s-p2flt').textContent  = g.p2Faults;
-  $('s-p1str').textContent  = g.p1BestStreak; $('s-p2str').textContent = g.p2BestStreak;
+function renderTeamStats(){
+  const g=G;
+  const wins=g.rallies.filter(r=>r.type==='win');
+  const p1w=wins.filter(r=>r.team===1).length;
+  const p2w=wins.filter(r=>r.team===2).length;
+  const tot=p1w+p2w;
+  $('prog').style.width = tot?(p1w/tot*100).toFixed(1)+'%':'50%';
+  $('st-p1sc').textContent=g.p1Score;   $('st-p2sc').textContent=g.p2Score;
+  $('st-p1pt').textContent=g.p1Score;   $('st-p2pt').textContent=g.p2Score;
+  $('st-p1ft').textContent=g.p1Stats.faults+(cfg.mode==='doubles'?g.p1pStats.faults:0);
+  $('st-p2ft').textContent=g.p2Stats.faults+(cfg.mode==='doubles'?g.p2pStats.faults:0);
+  $('st-p1st').textContent=g.t1BestStreak; $('st-p2st').textContent=g.t2BestStreak;
+  $('st-p1sv').textContent=g.t1SvcCount;  $('st-p2sv').textContent=g.t2SvcCount;
 }
 
-function renderSetsTable() {
-  const tbody = $('sets-body'), empty = $('sets-empty');
-  tbody.innerHTML = '';
-  if (!G.setHistory.length) { empty.style.display = 'block'; return; }
-  empty.style.display = 'none';
-  G.setHistory.forEach(sh => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td class="sc">Set ${sh.set}</td><td class="${sh.winner===1?'wc1':''}">${sh.p1}</td><td class="${sh.winner===2?'wc2':''}">${sh.p2}</td><td style="color:${sh.winner===1?'var(--p1)':'var(--p2)'};font-size:11px">${sh.winner===1?cfg.p1Name:cfg.p2Name}</td>`;
-    tbody.appendChild(tr);
+function renderPlayerStats(){
+  const g=G, isD=cfg.mode==='doubles';
+  const container=$('player-cards'); container.innerHTML='';
+
+  const players=[
+    {name:cfg.p1Name,   stat:g.p1Stats,  team:1, role:isD?'Team A · P1':'Team A'},
+    ...(isD?[{name:cfg.p1Partner, stat:g.p1pStats, team:1, role:'Team A · P2'}]:[]),
+    {name:cfg.p2Name,   stat:g.p2Stats,  team:2, role:isD?'Team B · P1':'Team B'},
+    ...(isD?[{name:cfg.p2Partner, stat:g.p2pStats, team:2, role:'Team B · P2'}]:[]),
+  ];
+
+  players.forEach(p=>{
+    const col = p.team===1 ? 'var(--p1)' : 'var(--p2)';
+    const winRate = p.stat.timesServed>0
+      ? Math.round(p.stat.points/p.stat.timesServed*100)+'%'
+      : '—';
+    const div=document.createElement('div'); div.className='psc';
+    div.innerHTML=`
+      <div class="psc-head">
+        <div class="psc-dot" style="background:${col}"></div>
+        <div class="psc-name" style="color:${col}">${p.name}</div>
+        <div class="psc-role">${p.role}</div>
+      </div>
+      <div class="psc-grid">
+        <div class="psc-stat">
+          <div class="psc-val" style="color:${col}">${p.stat.points}</div>
+          <div class="psc-key">Points Won</div>
+        </div>
+        <div class="psc-stat">
+          <div class="psc-val" style="color:${col}">${p.stat.faults}</div>
+          <div class="psc-key">Faults</div>
+        </div>
+        <div class="psc-stat">
+          <div class="psc-val" style="color:${col}">${p.stat.bestStreak}</div>
+          <div class="psc-key">Best Streak</div>
+        </div>
+        <div class="psc-stat">
+          <div class="psc-val" style="color:${col}">${p.stat.timesServed}</div>
+          <div class="psc-key">Times Served</div>
+        </div>
+      </div>`;
+    container.appendChild(div);
   });
 }
 
-function showMatchOver() {
-  const g = G;
-  $('mo-w').textContent   = g.winner;
-  $('mo-w').style.color   = g.winnerTeam === 1 ? 'var(--p1)' : 'var(--p2)';
-  $('mo-sub').textContent = `wins ${g.p1Sets}–${g.p2Sets}`;
-  $('mo-sets').innerHTML  = g.setHistory.map(sh => `<div class="mo-set"><span style="color:${sh.winner===1?'var(--p1)':'rgba(255,255,255,.4)'}">${sh.p1}</span><span style="color:rgba(255,255,255,.3);margin:0 5px">–</span><span style="color:${sh.winner===2?'var(--p2)':'rgba(255,255,255,.4)'}">${sh.p2}</span></div>`).join('');
-  document.getElementById('mo').classList.add('show');
+// ── Match Over ─────────────────────────────────────────────────
+function showMatchOver(){
+  const g=G;
+  const wCol = g.winnerTeam===1 ? 'var(--p1)' : 'var(--p2)';
+  $('mo-w').textContent=g.winner; $('mo-w').style.color=wCol;
+  $('mo-sub').textContent='wins the match!';
+  $('mo-sc').innerHTML=`<span style="color:var(--p1)">${g.p1Score}</span> <span style="color:var(--muted)">–</span> <span style="color:var(--p2)">${g.p2Score}</span>`;
+
+  // Player stat cards in overlay
+  const isD=cfg.mode==='doubles';
+  const players=[
+    {name:cfg.p1Name,   stat:g.p1Stats,  team:1},
+    ...(isD?[{name:cfg.p1Partner,stat:g.p1pStats,team:1}]:[]),
+    {name:cfg.p2Name,   stat:g.p2Stats,  team:2},
+    ...(isD?[{name:cfg.p2Partner,stat:g.p2pStats,team:2}]:[]),
+  ];
+  $('mo-stats').innerHTML=players.map(p=>{
+    const col=p.team===1?'var(--p1)':'var(--p2)';
+    return `<div class="mo-pcard">
+      <div class="mo-pname"><div style="width:7px;height:7px;border-radius:50%;background:${col};flex-shrink:0"></div><span style="color:${col}">${p.name}</span></div>
+      <div class="mo-prow"><span>Points scored</span><span>${p.stat.points}</span></div>
+      <div class="mo-prow"><span>Faults</span><span>${p.stat.faults}</span></div>
+      <div class="mo-prow"><span>Best streak</span><span>${p.stat.bestStreak}</span></div>
+      <div class="mo-prow"><span>Times served</span><span>${p.stat.timesServed}</span></div>
+    </div>`;
+  }).join('');
+
+  $('mo').classList.add('show');
 }
 
-function launchConfetti() {
-  const cols = ['#E8401C','#FF6B47','#0EA5C4','#38BDF8','#fff','#F5C542'];
-  for (let i = 0; i < 60; i++) {
-    const e = document.createElement('div'); e.className = 'conf';
-    e.style.cssText = `left:${10+Math.random()*80}vw;top:${10+Math.random()*55}vh;background:${cols[~~(Math.random()*cols.length)]};animation-delay:${Math.random()*.9}s;animation-duration:${1.2+Math.random()*.9}s;border-radius:${Math.random()>.5?'50%':'2px'}`;
+function launchConfetti(){
+  const cols=['#E8401C','#FF6B47','#0EA5C4','#38BDF8','#fff','#F5C542','#22C55E'];
+  for(let i=0;i<70;i++){
+    const e=document.createElement('div'); e.className='conf';
+    e.style.cssText=`left:${8+Math.random()*84}vw;top:${8+Math.random()*58}vh;background:${cols[~~(Math.random()*cols.length)]};animation-delay:${Math.random()*.95}s;animation-duration:${1.2+Math.random()*.9}s;border-radius:${Math.random()>.5?'50%':'2px'}`;
     document.body.appendChild(e);
-    setTimeout(() => e.remove(), 2900);
+    setTimeout(()=>e.remove(),3000);
   }
 }
 
-function popAnim(team) {
-  const el = $('sc'+team);
-  el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
+function popAnim(team){
+  const el=$('sc'+team); el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
 }
 
-function switchTab(t) {
-  const tabs = ['log','stats','sets'];
-  document.querySelectorAll('.stab').forEach((b,i) => b.classList.toggle('on', tabs[i]===t));
-  tabs.forEach(x => $('sp-'+x).classList.toggle('on', x===t));
+function switchTab(t){
+  const tabs=['log','stats','players'];
+  document.querySelectorAll('.stab').forEach((b,i)=>b.classList.toggle('on',tabs[i]===t));
+  tabs.forEach(x=>$('sp-'+x).classList.toggle('on',x===t));
 }
 
 let _tt;
-function toast(msg) {
-  const t = $('toast'); t.textContent = msg; t.classList.add('show');
-  clearTimeout(_tt); _tt = setTimeout(() => t.classList.remove('show'), 2300);
-}
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(_tt); _tt=setTimeout(()=>t.classList.remove('show'),2400); }
 
-function $(id) { return document.getElementById(id); }
-
-/* ── Keyboard ────────────────────────────────────────────────── */
-document.addEventListener('keydown', e => {
-  if (!$('game').classList.contains('on')) return;
-  if (e.target.tagName === 'INPUT') return;
-  if (e.key==='a'||e.key==='A') rallyWin(1);
-  if (e.key==='l'||e.key==='L') rallyWin(2);
-  if (e.key==='q'||e.key==='Q') rallyFault(1);
-  if (e.key==='p'||e.key==='P') rallyFault(2);
-  if (e.key==='z'||e.key==='Z') undoLast();
-  if (e.key===' '){ e.preventDefault(); toggleTimer(); }
+// ── Keyboard ───────────────────────────────────────────────────
+document.addEventListener('keydown',e=>{
+  if(!$('game').classList.contains('on')) return;
+  if(e.target.tagName==='INPUT') return;
+  if(e.key==='a'||e.key==='A') rallyWin(1);
+  if(e.key==='l'||e.key==='L') rallyWin(2);
+  if(e.key==='q'||e.key==='Q') rallyFault(1);
+  if(e.key==='p'||e.key==='P') rallyFault(2);
+  if(e.key==='z'||e.key==='Z') undoLast();
+  if(e.key===' '){ e.preventDefault(); toggleTimer(); }
 });
 </script>
 </body>
